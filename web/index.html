@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capability Stack Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f3f4f6;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .controls label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    capability-stack {
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>Capability Stack Web Component</h1>
+
+    <div class="controls">
+      <label>
+        <input type="checkbox" id="interactive" checked>
+        Interactive (hover for details)
+      </label>
+      <label>
+        <input type="checkbox" id="dark-mode">
+        Dark Mode
+      </label>
+      <label>
+        <input type="checkbox" id="show-legend" checked>
+        Show Legend
+      </label>
+      <label>
+        <input type="checkbox" id="show-foundational" checked>
+        Show Foundational
+      </label>
+    </div>
+
+    <capability-stack
+      id="stack"
+      src="../examples/operations-saas-greenfield.json"
+      interactive
+      show-legend
+      show-foundational>
+    </capability-stack>
+  </div>
+
+  <script type="module" src="/src/capability-stack.ts"></script>
+  <script>
+    const stack = document.getElementById('stack');
+
+    document.getElementById('interactive').addEventListener('change', (e) => {
+      stack.interactive = e.target.checked;
+    });
+
+    document.getElementById('dark-mode').addEventListener('change', (e) => {
+      stack.theme = e.target.checked ? 'dark' : 'light';
+    });
+
+    document.getElementById('show-legend').addEventListener('change', (e) => {
+      stack.showLegend = e.target.checked;
+    });
+
+    document.getElementById('show-foundational').addEventListener('change', (e) => {
+      stack.showFoundational = e.target.checked;
+    });
+  </script>
+</body>
+</html>
