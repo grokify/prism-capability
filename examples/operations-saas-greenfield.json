@@ -1,0 +1,586 @@
+{
+  "$schema": "../schema/capability-stack.schema.json",
+  "metadata": {
+    "name": "b2b-saas-operations",
+    "version": "0.1.0",
+    "title": "B2B SaaS Operations & SRE Reference Architecture",
+    "description": "Site reliability and operations capabilities across the software lifecycle",
+    "domain": "operations",
+    "createdAt": "2026-05-17",
+    "authors": ["SRE Team"]
+  },
+  "layers": [
+    {
+      "id": "strategy-governance",
+      "name": "Strategy & Governance",
+      "description": "Operational strategy, SLO frameworks, and reliability culture",
+      "order": 1,
+      "phase": "plan",
+      "nistCsfFunction": "govern"
+    },
+    {
+      "id": "design-architecture",
+      "name": "Design & Architecture",
+      "description": "System design for reliability, capacity planning, and failure domains",
+      "order": 2,
+      "phase": "design",
+      "nistCsfFunction": "identify"
+    },
+    {
+      "id": "build-test",
+      "name": "Build & Test",
+      "description": "CI/CD pipelines, testing strategies, and deployment automation",
+      "order": 3,
+      "phase": "build",
+      "nistCsfFunction": "protect"
+    },
+    {
+      "id": "deploy-release",
+      "name": "Deploy & Release",
+      "description": "Deployment strategies, release management, and traffic control",
+      "order": 4,
+      "phase": "deploy",
+      "nistCsfFunction": "protect"
+    },
+    {
+      "id": "observe",
+      "name": "Observe",
+      "description": "Monitoring, logging, tracing, and alerting",
+      "order": 5,
+      "phase": "monitor",
+      "nistCsfFunction": "detect"
+    },
+    {
+      "id": "respond",
+      "name": "Respond",
+      "description": "Incident management, on-call, and runbooks",
+      "order": 6,
+      "phase": "respond",
+      "nistCsfFunction": "respond"
+    },
+    {
+      "id": "recover-improve",
+      "name": "Recover & Improve",
+      "description": "Disaster recovery, postmortems, and continuous improvement",
+      "order": 7,
+      "phase": "recover",
+      "nistCsfFunction": "recover"
+    }
+  ],
+  "categories": [
+    { "id": "reliability", "name": "Reliability", "color": "#10b981" },
+    { "id": "observability", "name": "Observability", "color": "#3b82f6" },
+    { "id": "deployment", "name": "Deployment", "color": "#8b5cf6" },
+    { "id": "incident", "name": "Incident Management", "color": "#ef4444" },
+    { "id": "capacity", "name": "Capacity", "color": "#f59e0b" },
+    { "id": "automation", "name": "Automation", "color": "#06b6d4" }
+  ],
+  "capabilities": [
+    {
+      "id": "slo-framework",
+      "name": "SLO Framework",
+      "fullName": "Service Level Objectives Framework",
+      "layerId": "strategy-governance",
+      "categoryId": "reliability",
+      "status": "operational",
+      "implementedAt": "2025-03-01",
+      "owner": "SRE Team",
+      "tooling": [
+        { "name": "Nobl9", "vendor": "Nobl9", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-slo-coverage", "sli-slo-attainment"],
+        "levelCriteria": {
+          "M1": "No SLOs defined",
+          "M2": "SLOs for critical services, manual tracking",
+          "M3": "SLOs for all services, automated dashboards",
+          "M4": "Error budgets drive release decisions",
+          "M5": "Predictive SLO management, auto-scaling based on burn rate"
+        }
+      }
+    },
+    {
+      "id": "error-budget",
+      "name": "Error Budget Policy",
+      "layerId": "strategy-governance",
+      "categoryId": "reliability",
+      "status": "implemented",
+      "implementedAt": "2025-06-01",
+      "owner": "SRE Team",
+      "dependencies": ["slo-framework"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-error-budget-remaining"]
+      }
+    },
+    {
+      "id": "toil-tracking",
+      "name": "Toil Tracking",
+      "layerId": "strategy-governance",
+      "categoryId": "automation",
+      "status": "in-progress",
+      "priority": "medium",
+      "targetDate": "2026-06-30",
+      "owner": "SRE Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-toil-percentage"],
+        "levelCriteria": {
+          "M1": "Toil not tracked",
+          "M2": "Manual toil estimates",
+          "M3": "Toil tracked in work management system",
+          "M4": "Toil budget (< 50%), automated tracking",
+          "M5": "Toil < 25%, continuous automation pipeline"
+        }
+      }
+    },
+    {
+      "id": "reliability-review",
+      "name": "Reliability Review",
+      "fullName": "Production Readiness Review",
+      "layerId": "strategy-governance",
+      "categoryId": "reliability",
+      "status": "operational",
+      "owner": "SRE Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-prr-coverage"]
+      }
+    },
+    {
+      "id": "capacity-planning",
+      "name": "Capacity Planning",
+      "layerId": "design-architecture",
+      "categoryId": "capacity",
+      "status": "implemented",
+      "owner": "SRE Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-capacity-headroom"],
+        "levelCriteria": {
+          "M1": "Reactive capacity management",
+          "M2": "Quarterly capacity reviews",
+          "M3": "Monthly forecasting, load testing",
+          "M4": "Automated capacity alerts, growth projections",
+          "M5": "ML-based demand forecasting, auto-provisioning"
+        }
+      }
+    },
+    {
+      "id": "failure-domains",
+      "name": "Failure Domain Design",
+      "layerId": "design-architecture",
+      "categoryId": "reliability",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "description": "Isolation of failure domains through cell-based or zone-based architecture",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-blast-radius"]
+      }
+    },
+    {
+      "id": "chaos-engineering",
+      "name": "Chaos Engineering",
+      "layerId": "design-architecture",
+      "categoryId": "reliability",
+      "status": "planned",
+      "priority": "high",
+      "targetDate": "2026-09-30",
+      "dependencies": ["failure-domains", "observability-platform"],
+      "tooling": [
+        { "name": "Gremlin", "vendor": "Gremlin", "type": "commercial", "status": "evaluating" }
+      ],
+      "tags": ["resilience"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-chaos-experiment-coverage"],
+        "levelCriteria": {
+          "M1": "No chaos engineering",
+          "M2": "Ad-hoc failure injection in staging",
+          "M3": "Regular game days, documented experiments",
+          "M4": "Continuous chaos in production, automated rollback",
+          "M5": "Chaos as code, integrated into CI/CD"
+        }
+      }
+    },
+    {
+      "id": "cicd-pipeline",
+      "name": "CI/CD Pipeline",
+      "layerId": "build-test",
+      "categoryId": "deployment",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "GitHub Actions", "vendor": "GitHub", "type": "managed-service", "status": "deployed" },
+        { "name": "Argo CD", "type": "open-source", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-deployment-frequency", "sli-lead-time"],
+        "levelCriteria": {
+          "M1": "Manual deployments",
+          "M2": "Basic CI, manual CD",
+          "M3": "Automated CI/CD, staging environment",
+          "M4": "GitOps, multi-environment pipelines",
+          "M5": "Continuous deployment, < 1hr lead time"
+        }
+      }
+    },
+    {
+      "id": "test-automation",
+      "name": "Test Automation",
+      "layerId": "build-test",
+      "categoryId": "automation",
+      "status": "operational",
+      "owner": "Engineering",
+      "prismRef": {
+        "domainId": "quality",
+        "sliIds": ["sli-test-coverage", "sli-test-reliability"]
+      }
+    },
+    {
+      "id": "load-testing",
+      "name": "Load Testing",
+      "layerId": "build-test",
+      "categoryId": "capacity",
+      "status": "implemented",
+      "owner": "SRE Team",
+      "tooling": [
+        { "name": "k6", "type": "open-source", "status": "deployed" }
+      ],
+      "dependencies": ["cicd-pipeline"],
+      "tags": ["performance"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-load-test-coverage"]
+      }
+    },
+    {
+      "id": "canary-deployments",
+      "name": "Canary Deployments",
+      "layerId": "deploy-release",
+      "categoryId": "deployment",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Argo Rollouts", "type": "open-source", "status": "deployed" }
+      ],
+      "dependencies": ["cicd-pipeline", "observability-platform"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-canary-coverage"],
+        "levelCriteria": {
+          "M1": "Big bang deployments",
+          "M2": "Blue-green for critical services",
+          "M3": "Canary for all services, manual promotion",
+          "M4": "Automated canary analysis, auto-rollback",
+          "M5": "Progressive delivery, feature flags integrated"
+        }
+      }
+    },
+    {
+      "id": "feature-flags",
+      "name": "Feature Flags",
+      "layerId": "deploy-release",
+      "categoryId": "deployment",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "LaunchDarkly", "vendor": "LaunchDarkly", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-feature-flag-adoption"]
+      }
+    },
+    {
+      "id": "traffic-management",
+      "name": "Traffic Management",
+      "layerId": "deploy-release",
+      "categoryId": "deployment",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Istio", "type": "open-source", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-traffic-shift-success"]
+      }
+    },
+    {
+      "id": "observability-platform",
+      "name": "Observability Platform",
+      "layerId": "observe",
+      "categoryId": "observability",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Datadog", "vendor": "Datadog", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-observability-coverage"],
+        "levelCriteria": {
+          "M1": "Basic server metrics",
+          "M2": "APM for critical services",
+          "M3": "Full-stack observability, custom dashboards",
+          "M4": "Correlated metrics/logs/traces, SLO dashboards",
+          "M5": "AIOps, anomaly detection, predictive alerts"
+        }
+      }
+    },
+    {
+      "id": "metrics",
+      "name": "Metrics Collection",
+      "layerId": "observe",
+      "categoryId": "observability",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Prometheus", "type": "open-source", "status": "deployed" },
+        { "name": "Datadog Metrics", "vendor": "Datadog", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-metric-coverage"]
+      }
+    },
+    {
+      "id": "logging",
+      "name": "Centralized Logging",
+      "layerId": "observe",
+      "categoryId": "observability",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Datadog Logs", "vendor": "Datadog", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-log-coverage", "sli-log-retention"]
+      }
+    },
+    {
+      "id": "distributed-tracing",
+      "name": "Distributed Tracing",
+      "layerId": "observe",
+      "categoryId": "observability",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Datadog APM", "vendor": "Datadog", "type": "commercial", "status": "deployed" }
+      ],
+      "tags": ["golden-signals"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-trace-coverage"]
+      }
+    },
+    {
+      "id": "alerting",
+      "name": "Alerting",
+      "layerId": "observe",
+      "categoryId": "observability",
+      "status": "operational",
+      "owner": "SRE Team",
+      "dependencies": ["metrics", "slo-framework"],
+      "tooling": [
+        { "name": "PagerDuty", "vendor": "PagerDuty", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-alert-snr", "sli-mtta"],
+        "levelCriteria": {
+          "M1": "No alerting",
+          "M2": "Threshold-based alerts, high noise",
+          "M3": "SLO-based alerts, alert routing",
+          "M4": "Alert correlation, < 30% noise ratio",
+          "M5": "Predictive alerts, auto-remediation triggers"
+        }
+      }
+    },
+    {
+      "id": "on-call",
+      "name": "On-Call Management",
+      "layerId": "respond",
+      "categoryId": "incident",
+      "status": "operational",
+      "owner": "SRE Team",
+      "tooling": [
+        { "name": "PagerDuty", "vendor": "PagerDuty", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-oncall-load", "sli-escalation-rate"]
+      }
+    },
+    {
+      "id": "incident-management",
+      "name": "Incident Management",
+      "layerId": "respond",
+      "categoryId": "incident",
+      "status": "operational",
+      "owner": "SRE Team",
+      "tooling": [
+        { "name": "incident.io", "vendor": "incident.io", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-mttd", "sli-mttr"],
+        "levelCriteria": {
+          "M1": "Ad-hoc incident response",
+          "M2": "Defined severity levels, manual coordination",
+          "M3": "Incident commander role, Slack-based workflow",
+          "M4": "Automated incident creation, status page integration",
+          "M5": "< 5 min MTTD, < 30 min MTTR, automated remediation"
+        }
+      }
+    },
+    {
+      "id": "runbooks",
+      "name": "Runbooks",
+      "layerId": "respond",
+      "categoryId": "incident",
+      "status": "implemented",
+      "owner": "SRE Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-runbook-coverage", "sli-runbook-execution-time"]
+      }
+    },
+    {
+      "id": "auto-remediation",
+      "name": "Auto-Remediation",
+      "layerId": "respond",
+      "categoryId": "automation",
+      "status": "planned",
+      "priority": "medium",
+      "targetDate": "2026-12-31",
+      "dependencies": ["runbooks", "alerting"],
+      "tags": ["automation"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-auto-remediation-rate"]
+      }
+    },
+    {
+      "id": "disaster-recovery",
+      "name": "Disaster Recovery",
+      "layerId": "recover-improve",
+      "categoryId": "reliability",
+      "status": "implemented",
+      "owner": "SRE Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-rto", "sli-rpo"],
+        "levelCriteria": {
+          "M1": "No DR plan",
+          "M2": "Documented DR plan, untested",
+          "M3": "Annual DR drills, RTO < 4hr",
+          "M4": "Quarterly DR drills, RTO < 1hr, automated failover",
+          "M5": "Active-active, RTO < 5 min, continuous testing"
+        }
+      }
+    },
+    {
+      "id": "backup-restore",
+      "name": "Backup & Restore",
+      "layerId": "recover-improve",
+      "categoryId": "reliability",
+      "status": "operational",
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-backup-success-rate", "sli-restore-test-frequency"]
+      }
+    },
+    {
+      "id": "postmortems",
+      "name": "Blameless Postmortems",
+      "layerId": "recover-improve",
+      "categoryId": "incident",
+      "status": "operational",
+      "owner": "SRE Team",
+      "dependencies": ["incident-management"],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-postmortem-completion", "sli-action-item-closure"],
+        "levelCriteria": {
+          "M1": "No postmortems",
+          "M2": "Postmortems for SEV1 only",
+          "M3": "Postmortems for all SEV1/2, action items tracked",
+          "M4": "Postmortem within 48hr, 90% action item closure",
+          "M5": "Postmortem within 24hr, themes analyzed, prevention metrics"
+        }
+      }
+    },
+    {
+      "id": "reliability-improvement",
+      "name": "Reliability Improvement",
+      "layerId": "recover-improve",
+      "categoryId": "reliability",
+      "status": "implemented",
+      "owner": "SRE Team",
+      "dependencies": ["postmortems", "slo-framework"],
+      "description": "Systematic improvement based on SLO miss analysis and postmortem trends",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-reliability-investment"]
+      }
+    }
+  ],
+  "foundational": [
+    {
+      "id": "infrastructure-as-code",
+      "name": "Infrastructure as Code",
+      "fullName": "Terraform, Pulumi, or similar",
+      "layerId": "build-test",
+      "categoryId": "automation",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Terraform", "vendor": "HashiCorp", "type": "open-source", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-iac-coverage", "sli-drift-detection"]
+      }
+    },
+    {
+      "id": "configuration-management",
+      "name": "Configuration Management",
+      "layerId": "build-test",
+      "categoryId": "automation",
+      "status": "operational",
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-config-drift"]
+      }
+    },
+    {
+      "id": "service-catalog",
+      "name": "Service Catalog",
+      "layerId": "strategy-governance",
+      "categoryId": "reliability",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Backstage", "type": "open-source", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-service-catalog-coverage"]
+      }
+    }
+  ],
+  "prismIntegration": {
+    "modelRef": "../prism/maturity-model.json",
+    "stateRef": "../prism/maturity-state.json",
+    "planRef": "../prism/maturity-plan.json",
+    "defaultDomain": "operations"
+  }
+}

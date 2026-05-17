@@ -1,0 +1,346 @@
+title: |md
+  # B2B SaaS Operations & SRE Reference Architecture
+| {near: top-center}
+
+stack: {
+  grid-rows: 8
+  grid-gap: 16
+  style.fill: transparent
+  style.stroke: transparent
+
+  strategy_governance: Strategy & Governance {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    slo_framework: SLO Framework {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    error_budget: Error Budget Policy {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    toil_tracking: Toil Tracking {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#f59e0b"
+      style.font-color: "#000000"
+    }
+    reliability_review: Reliability Review {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    service_catalog: Service Catalog {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+  }
+
+  design_architecture: Design & Architecture {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    capacity_planning: Capacity Planning {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    failure_domains: Failure Domain Design {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    chaos_engineering: Chaos Engineering {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#9ca3af"
+      style.font-color: "#000000"
+    }
+  }
+
+  build_test: Build & Test {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    cicd_pipeline: CI/CD Pipeline {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    test_automation: Test Automation {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    load_testing: Load Testing {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    infrastructure_as_code: Infrastructure as Code {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    configuration_management: Configuration Management {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+  }
+
+  deploy_release: Deploy & Release {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    canary_deployments: Canary Deployments {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    feature_flags: Feature Flags {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    traffic_management: Traffic Management {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+  }
+
+  observe: Observe {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    observability_platform: Observability Platform {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    metrics: Metrics Collection {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    logging: Centralized Logging {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    distributed_tracing: Distributed Tracing {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    alerting: Alerting {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+  }
+
+  respond: Respond {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    on_call: On-Call Management {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    incident_management: Incident Management {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    runbooks: Runbooks {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    auto_remediation: Auto-Remediation {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#9ca3af"
+      style.font-color: "#000000"
+    }
+  }
+
+  recover_improve: Recover & Improve {
+    grid-columns: 6
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#f1f5f9"
+    style.stroke: "#cbd5e1"
+    disaster_recovery: Disaster Recovery {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+    backup_restore: Backup & Restore {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    postmortems: Blameless Postmortems {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    reliability_improvement: Reliability Improvement {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+  }
+
+  foundational: Foundational {
+    grid-columns: 4
+    grid-gap: 8
+    style.border-radius: 8
+    style.fill: "#fef3c7"
+    style.stroke: "#f59e0b"
+    infrastructure_as_code: Infrastructure as Code {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    configuration_management: Configuration Management {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#10b981"
+      style.font-color: "#ffffff"
+    }
+    service_catalog: Service Catalog {
+      shape: rectangle
+      style.border-radius: 6
+      style.stroke-width: 0
+      style.shadow: true
+      style.fill: "#3b82f6"
+      style.font-color: "#ffffff"
+    }
+  }
+}
+
+
+# Legend
+legend: {
+  near: bottom-center
+  grid-columns: 4
+  grid-gap: 8
+  style.fill: "#ffffff"
+  style.stroke: "#e5e7eb"
+  style.border-radius: 8
+  
+  operational: Operational {style.fill: "#10b981"; style.font-color: "#ffffff"; style.border-radius: 4}
+  implemented: Implemented {style.fill: "#3b82f6"; style.font-color: "#ffffff"; style.border-radius: 4}
+  in_progress: In Progress {style.fill: "#f59e0b"; style.font-color: "#000000"; style.border-radius: 4}
+  planned: Planned {style.fill: "#9ca3af"; style.font-color: "#000000"; style.border-radius: 4}
+}

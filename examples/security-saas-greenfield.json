@@ -1,0 +1,554 @@
+{
+  "$schema": "../schema/capability-stack.schema.json",
+  "metadata": {
+    "name": "b2b-saas-security",
+    "version": "0.1.0",
+    "title": "B2B SaaS Security Reference Architecture",
+    "description": "Defense-in-depth security capabilities across the software lifecycle and runtime",
+    "domain": "security",
+    "createdAt": "2026-05-17",
+    "authors": ["Security Architecture Team"]
+  },
+  "layers": [
+    {
+      "id": "govern-plan",
+      "name": "Govern & Plan",
+      "description": "Security strategy, risk management, and compliance accountability",
+      "order": 1,
+      "phase": "plan",
+      "nistCsfFunction": "govern"
+    },
+    {
+      "id": "threat-understand",
+      "name": "Threat Understanding",
+      "description": "Threat modeling, attack surface analysis, and risk prioritization",
+      "order": 2,
+      "phase": "design",
+      "nistCsfFunction": "identify"
+    },
+    {
+      "id": "secure-design",
+      "name": "Secure Design & Architecture",
+      "description": "Security requirements, trust boundaries, and secure design principles",
+      "order": 3,
+      "phase": "design",
+      "nistCsfFunction": "protect"
+    },
+    {
+      "id": "secure-build",
+      "name": "Secure Build",
+      "description": "Secure coding, code review, secrets and dependency management",
+      "order": 4,
+      "phase": "build",
+      "nistCsfFunction": "protect"
+    },
+    {
+      "id": "shift-left-testing",
+      "name": "Shift-Left Security Testing",
+      "description": "Application security testing in the SDLC",
+      "order": 5,
+      "phase": "test",
+      "nistCsfFunction": "detect"
+    },
+    {
+      "id": "build-release",
+      "name": "Build & Release Security",
+      "description": "CI/CD pipeline security and software supply chain",
+      "order": 6,
+      "phase": "release",
+      "nistCsfFunction": "protect"
+    },
+    {
+      "id": "secure-infra",
+      "name": "Secure Infrastructure & Deployment",
+      "description": "Container, cloud, and infrastructure security",
+      "order": 7,
+      "phase": "deploy",
+      "nistCsfFunction": "protect"
+    },
+    {
+      "id": "runtime-security",
+      "name": "Runtime Security & Operations",
+      "description": "Runtime protection, threat detection, and incident response",
+      "order": 8,
+      "phase": "operate",
+      "nistCsfFunction": "detect"
+    }
+  ],
+  "categories": [
+    { "id": "governance", "name": "Governance", "color": "#6366f1" },
+    { "id": "architecture", "name": "Architecture", "color": "#8b5cf6" },
+    { "id": "development", "name": "Development", "color": "#06b6d4" },
+    { "id": "appsec", "name": "AppSec", "color": "#10b981" },
+    { "id": "supply-chain", "name": "Supply Chain", "color": "#f59e0b" },
+    { "id": "container-security", "name": "Container Security", "color": "#ef4444" },
+    { "id": "cloud-security", "name": "Cloud Security", "color": "#3b82f6" },
+    { "id": "runtime", "name": "Runtime Security", "color": "#ec4899" },
+    { "id": "soc", "name": "SOC", "color": "#f97316" }
+  ],
+  "capabilities": [
+    {
+      "id": "security-policy",
+      "name": "Security Policy & Standards",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "operational",
+      "implementedAt": "2025-01-15",
+      "owner": "Security Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-policy-coverage"],
+        "levelCriteria": {
+          "M1": "Ad-hoc policies, no central repository",
+          "M2": "Documented policies exist, annual review",
+          "M3": "Central policy repo, exceptions tracked",
+          "M4": "Policy-as-code, automated compliance checks",
+          "M5": "Continuous policy optimization, industry benchmarking"
+        }
+      }
+    },
+    {
+      "id": "risk-management",
+      "name": "Risk Management",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "implemented",
+      "implementedAt": "2025-06-01",
+      "owner": "Security Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-risk-assessment-coverage"]
+      }
+    },
+    {
+      "id": "security-training",
+      "name": "Security Awareness & Training",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "operational",
+      "owner": "Security Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-training-completion"]
+      }
+    },
+    {
+      "id": "compliance-audit",
+      "name": "Compliance & Audit",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "implemented",
+      "owner": "Compliance Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-audit-findings"]
+      }
+    },
+    {
+      "id": "threat-modeling",
+      "name": "Threat Modeling",
+      "layerId": "threat-understand",
+      "categoryId": "architecture",
+      "status": "in-progress",
+      "priority": "high",
+      "targetDate": "2026-06-30",
+      "owner": "AppSec Team",
+      "tooling": [
+        { "name": "OWASP Threat Dragon", "type": "open-source", "status": "piloting" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-threat-model-coverage"],
+        "levelCriteria": {
+          "M1": "No threat modeling",
+          "M2": "Ad-hoc threat modeling for critical systems",
+          "M3": "Threat modeling for all new features",
+          "M4": "Automated threat model updates, STRIDE/DREAD scoring",
+          "M5": "Continuous threat intelligence integration"
+        }
+      }
+    },
+    {
+      "id": "attack-surface",
+      "name": "Attack Surface Analysis",
+      "layerId": "threat-understand",
+      "categoryId": "architecture",
+      "status": "planned",
+      "priority": "medium",
+      "targetDate": "2026-09-30",
+      "dependencies": ["threat-modeling"],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-attack-surface-inventory"]
+      }
+    },
+    {
+      "id": "secure-coding",
+      "name": "Secure Coding Standards",
+      "layerId": "secure-build",
+      "categoryId": "development",
+      "status": "operational",
+      "owner": "Engineering",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-secure-coding-compliance"]
+      }
+    },
+    {
+      "id": "code-review",
+      "name": "Code Review",
+      "layerId": "secure-build",
+      "categoryId": "development",
+      "status": "operational",
+      "owner": "Engineering",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-code-review-coverage"]
+      }
+    },
+    {
+      "id": "secrets-management",
+      "name": "Secrets Management",
+      "layerId": "secure-build",
+      "categoryId": "development",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "HashiCorp Vault", "vendor": "HashiCorp", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-secrets-rotation", "sli-secrets-scanning"]
+      }
+    },
+    {
+      "id": "dependency-management",
+      "name": "Dependency Management",
+      "layerId": "secure-build",
+      "categoryId": "development",
+      "status": "implemented",
+      "owner": "Engineering",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-dependency-currency", "sli-vuln-remediation-time"]
+      }
+    },
+    {
+      "id": "sast",
+      "name": "SAST",
+      "fullName": "Static Application Security Testing",
+      "layerId": "shift-left-testing",
+      "categoryId": "appsec",
+      "status": "implemented",
+      "owner": "AppSec Team",
+      "tooling": [
+        { "name": "Semgrep", "type": "open-source", "status": "deployed" }
+      ],
+      "tags": ["shift-left"],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-sast-coverage", "sli-sast-findings"],
+        "levelCriteria": {
+          "M1": "No SAST",
+          "M2": "SAST on critical repos, manual runs",
+          "M3": "SAST in CI for all repos, blocking on high severity",
+          "M4": "Custom rules, <24h remediation SLA for critical",
+          "M5": "ML-enhanced detection, <4h remediation for critical"
+        }
+      }
+    },
+    {
+      "id": "sca",
+      "name": "SCA",
+      "fullName": "Software Composition Analysis",
+      "layerId": "shift-left-testing",
+      "categoryId": "appsec",
+      "status": "implemented",
+      "owner": "AppSec Team",
+      "tooling": [
+        { "name": "Dependabot", "vendor": "GitHub", "type": "managed-service", "status": "deployed" }
+      ],
+      "tags": ["shift-left", "supply-chain"],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-sca-coverage", "sli-vuln-remediation-time"]
+      }
+    },
+    {
+      "id": "dast",
+      "name": "DAST",
+      "fullName": "Dynamic Application Security Testing",
+      "layerId": "shift-left-testing",
+      "categoryId": "appsec",
+      "status": "planned",
+      "priority": "high",
+      "targetDate": "2026-07-31",
+      "owner": "AppSec Team",
+      "dependencies": ["sast"],
+      "tags": ["shift-left"],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-dast-coverage"]
+      }
+    },
+    {
+      "id": "secrets-scanning",
+      "name": "Secrets Scanning",
+      "layerId": "shift-left-testing",
+      "categoryId": "appsec",
+      "status": "operational",
+      "owner": "AppSec Team",
+      "tooling": [
+        { "name": "Gitleaks", "type": "open-source", "status": "deployed" },
+        { "name": "GitHub Secret Scanning", "vendor": "GitHub", "type": "managed-service", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-secrets-scanning"]
+      }
+    },
+    {
+      "id": "pipeline-security",
+      "name": "Pipeline Security",
+      "layerId": "build-release",
+      "categoryId": "supply-chain",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-pipeline-security"]
+      }
+    },
+    {
+      "id": "artifact-signing",
+      "name": "Artifact Signing",
+      "layerId": "build-release",
+      "categoryId": "supply-chain",
+      "status": "planned",
+      "priority": "high",
+      "targetDate": "2026-08-31",
+      "dependencies": ["pipeline-security"],
+      "tooling": [
+        { "name": "Sigstore/Cosign", "type": "open-source", "status": "evaluating" }
+      ],
+      "tags": ["supply-chain"],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-artifact-signing"]
+      }
+    },
+    {
+      "id": "sbom",
+      "name": "SBOM Generation",
+      "fullName": "Software Bill of Materials",
+      "layerId": "build-release",
+      "categoryId": "supply-chain",
+      "status": "planned",
+      "priority": "medium",
+      "targetDate": "2026-09-30",
+      "dependencies": ["sca"],
+      "tags": ["supply-chain"],
+      "frameworkMappings": [
+        { "framework": "slsa", "controls": ["L1", "L2"] }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-sbom-coverage"]
+      }
+    },
+    {
+      "id": "slsa-provenance",
+      "name": "Provenance (SLSA)",
+      "layerId": "build-release",
+      "categoryId": "supply-chain",
+      "status": "planned",
+      "priority": "low",
+      "targetDate": "2026-12-31",
+      "dependencies": ["artifact-signing", "sbom"],
+      "tags": ["supply-chain"],
+      "frameworkMappings": [
+        { "framework": "slsa", "controls": ["L2", "L3"] }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-slsa-level"]
+      }
+    },
+    {
+      "id": "container-scanning",
+      "name": "Container Scanning",
+      "layerId": "secure-infra",
+      "categoryId": "container-security",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Trivy", "type": "open-source", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-container-vuln-coverage"]
+      }
+    },
+    {
+      "id": "image-hardening",
+      "name": "Image Hardening",
+      "layerId": "secure-infra",
+      "categoryId": "container-security",
+      "status": "in-progress",
+      "priority": "medium",
+      "targetDate": "2026-06-30",
+      "dependencies": ["container-scanning"],
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-base-image-compliance"]
+      }
+    },
+    {
+      "id": "k8s-security",
+      "name": "Kubernetes Security",
+      "layerId": "secure-infra",
+      "categoryId": "cloud-security",
+      "status": "implemented",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Kyverno", "type": "open-source", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-k8s-compliance"]
+      }
+    },
+    {
+      "id": "iac-scanning",
+      "name": "IaC Scanning",
+      "fullName": "Infrastructure as Code Scanning",
+      "layerId": "secure-infra",
+      "categoryId": "cloud-security",
+      "status": "operational",
+      "owner": "Platform Team",
+      "tooling": [
+        { "name": "Checkov", "type": "open-source", "status": "deployed" }
+      ],
+      "tags": ["shift-left"],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-iac-compliance"]
+      }
+    },
+    {
+      "id": "cspm",
+      "name": "CSPM",
+      "fullName": "Cloud Security Posture Management",
+      "layerId": "runtime-security",
+      "categoryId": "cloud-security",
+      "status": "planned",
+      "priority": "high",
+      "targetDate": "2026-08-31",
+      "owner": "Security Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-cspm-compliance"]
+      }
+    },
+    {
+      "id": "cwpp",
+      "name": "CWPP",
+      "fullName": "Cloud Workload Protection Platform",
+      "layerId": "runtime-security",
+      "categoryId": "runtime",
+      "status": "planned",
+      "priority": "medium",
+      "targetDate": "2026-10-31",
+      "dependencies": ["cspm"],
+      "owner": "Security Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-runtime-protection"]
+      }
+    },
+    {
+      "id": "threat-detection",
+      "name": "Threat Detection",
+      "layerId": "runtime-security",
+      "categoryId": "soc",
+      "status": "implemented",
+      "owner": "Security Team",
+      "tooling": [
+        { "name": "Datadog Security Monitoring", "vendor": "Datadog", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-mttd", "sli-detection-coverage"]
+      }
+    },
+    {
+      "id": "incident-response",
+      "name": "Incident Response",
+      "layerId": "runtime-security",
+      "categoryId": "soc",
+      "status": "operational",
+      "owner": "Security Team",
+      "tooling": [
+        { "name": "PagerDuty", "vendor": "PagerDuty", "type": "commercial", "status": "deployed" }
+      ],
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-mttr", "sli-incident-runbook-coverage"],
+        "levelCriteria": {
+          "M1": "Ad-hoc response, no runbooks",
+          "M2": "Basic runbooks exist, manual escalation",
+          "M3": "Runbooks for all P1/P2, defined SLAs",
+          "M4": "Automated triage, <30min MTTR",
+          "M5": "Auto-remediation, <15min MTTR, postmortem culture"
+        }
+      }
+    }
+  ],
+  "foundational": [
+    {
+      "id": "iam",
+      "name": "Identity & Access Management",
+      "fullName": "SSO, MFA, RBAC",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "operational",
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-mfa-coverage", "sli-sso-coverage", "sli-rbac-compliance"]
+      }
+    },
+    {
+      "id": "data-security",
+      "name": "Data Security",
+      "fullName": "Encryption at Rest and in Transit",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "operational",
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "security",
+        "sliIds": ["sli-encryption-at-rest", "sli-encryption-in-transit"]
+      }
+    },
+    {
+      "id": "logging",
+      "name": "Logging & Auditability",
+      "layerId": "govern-plan",
+      "categoryId": "governance",
+      "status": "operational",
+      "owner": "Platform Team",
+      "prismRef": {
+        "domainId": "operations",
+        "sliIds": ["sli-log-coverage", "sli-audit-log-retention"]
+      }
+    }
+  ],
+  "prismIntegration": {
+    "modelRef": "../prism/maturity-model.json",
+    "stateRef": "../prism/maturity-state.json",
+    "planRef": "../prism/maturity-plan.json",
+    "defaultDomain": "security"
+  }
+}
