@@ -1,0 +1,54 @@
+{
+  "irVersion": "1.0",
+  "project": "capability-stack-spec",
+  "repository": "https://github.com/plexusone/capability-stack-spec",
+  "versioning": "semver",
+  "commitConvention": "conventional",
+  "maintainers": ["grokify", "johncwang@gmail.com"],
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2026-05-17",
+      "highlights": [
+        { "description": "Initial release of capability-stack-spec with Go types, validation, CLI, and rendering" },
+        { "description": "JSON Schema for defining capability stacks with layers, categories, and PRISM integration" },
+        { "description": "D2 diagram and static HTML rendering with interactive Lit web component" }
+      ],
+      "added": [
+        { "description": "Enum constants and validators for CapabilityStatus, Priority, Domain, Phase, NistCsfFunction, ToolType, ToolStatus, Framework", "commit": "2362c53" },
+        { "description": "Core types: Metadata, Layer, Category, Tool, FrameworkMapping, PRISMRef, PRISMIntegration, LevelCriteria", "commit": "29721e9" },
+        { "description": "Capability type with lifecycle status, dependencies, tooling, and framework mappings", "commit": "4a1a573" },
+        { "description": "CapabilityStack root document type with getter methods for querying capabilities", "commit": "87f783c" },
+        { "description": "Comprehensive validation: required fields, kebab-case IDs, enum values, reference integrity, dependency cycle detection", "commit": "9829f26" },
+        { "description": "JSON Schema generation from Go types using invopop/jsonschema with embedded schema accessors", "commit": "aa5fc49" },
+        { "description": "`capstack validate` command for document validation with detailed error reporting", "commit": "c5a2d8a" },
+        { "description": "`capstack init` command for creating new capability stack documents from templates", "commit": "c5a2d8a" },
+        { "description": "`capstack list` command with filtering by status, layer, and tag", "commit": "c5a2d8a" },
+        { "description": "`capstack show` command for displaying capability details including PRISM integration", "commit": "c5a2d8a" },
+        { "description": "D2 diagram rendering with default style (dependency arrows) and grid style (executive view)", "commit": "f78ad24" },
+        { "description": "Static HTML rendering with embeddable fragments or standalone documents, light/dark themes", "commit": "480becc" },
+        { "description": "`capstack render` command supporting D2 and HTML output formats", "commit": "11a875d" },
+        { "description": "Lit web component `<capability-stack>` for embedding in websites and MkDocs", "commit": "b5e33df" },
+        { "description": "Interactive tooltips, status legend, and foundational capabilities in web component", "commit": "b5e33df" }
+      ],
+      "documentation": [
+        { "description": "README with CLI usage, Go library examples, and key concepts", "commit": "8239faa" },
+        { "description": "Getting started guide for maturity workflow", "commit": "dadd9e4" },
+        { "description": "Web component usage and MkDocs integration guide", "commit": "8239faa" }
+      ],
+      "tests": [
+        { "description": "Unit tests for constants, validation, and CapabilityStack methods", "commit": "328d5dd" },
+        { "description": "Render tests for D2 and HTML output", "commit": "f78ad24" }
+      ],
+      "build": [
+        { "description": "GitHub Actions workflows for CI, linting, and SAST", "commit": "71f5ca2" },
+        { "description": "golangci-lint configuration", "commit": "71f5ca2" },
+        { "description": "Dependabot configuration for dependency updates", "commit": "71f5ca2" }
+      ],
+      "dependencies": [
+        { "description": "github.com/invopop/jsonschema for JSON Schema generation", "commit": "8226cf0" },
+        { "description": "github.com/spf13/cobra for CLI framework", "commit": "8226cf0" }
+      ]
+    }
+  ]
+}
