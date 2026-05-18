@@ -1,344 +1,389 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/grokify/prism-capability/schema/capability-stack.schema.json",
-  "title": "Capability Stack Specification",
-  "description": "A specification for defining capability stacks with layers, capabilities, and PRISM maturity integration",
-  "type": "object",
-  "required": ["metadata", "layers", "capabilities"],
-  "properties": {
-    "$schema": {
-      "type": "string",
-      "description": "JSON Schema reference"
-    },
-    "metadata": {
-      "$ref": "#/$defs/Metadata"
-    },
-    "layers": {
-      "type": "array",
-      "description": "Ordered list of layers (rows) in the capability stack, from top to bottom",
-      "items": {
-        "$ref": "#/$defs/Layer"
-      },
-      "minItems": 1
-    },
-    "categories": {
-      "type": "array",
-      "description": "Category definitions for grouping capabilities within layers",
-      "items": {
-        "$ref": "#/$defs/Category"
-      }
-    },
-    "capabilities": {
-      "type": "array",
-      "description": "All capabilities in the stack",
-      "items": {
-        "$ref": "#/$defs/Capability"
-      },
-      "minItems": 1
-    },
-    "foundational": {
-      "type": "array",
-      "description": "Cross-cutting foundational capabilities that span multiple layers",
-      "items": {
-        "$ref": "#/$defs/Capability"
-      }
-    },
-    "prismIntegration": {
-      "$ref": "#/$defs/PRISMIntegration"
-    }
-  },
   "$defs": {
-    "Metadata": {
-      "type": "object",
-      "required": ["name", "version"],
+    "Capability": {
       "properties": {
+        "id": {
+          "type": "string"
+        },
         "name": {
-          "type": "string",
-          "description": "Name of the capability stack"
+          "type": "string"
         },
-        "version": {
-          "type": "string",
-          "description": "Semantic version of this specification",
-          "pattern": "^v?\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?$"
-        },
-        "title": {
-          "type": "string",
-          "description": "Display title for rendered output (e.g., 'B2B SaaS Security Reference Architecture')"
+        "fullName": {
+          "type": "string"
         },
         "description": {
-          "type": "string",
-          "description": "Description of the capability stack"
+          "type": "string"
         },
-        "domain": {
-          "type": "string",
-          "description": "Primary domain (security, ai, platform, data, observability)",
-          "enum": ["security", "ai", "platform", "data", "observability", "infrastructure", "product", "operations"]
+        "layerId": {
+          "type": "string"
         },
-        "createdAt": {
-          "type": "string",
-          "format": "date"
+        "categoryId": {
+          "type": "string"
         },
-        "updatedAt": {
-          "type": "string",
-          "format": "date"
+        "status": {
+          "type": "string"
         },
-        "authors": {
-          "type": "array",
+        "priority": {
+          "type": "string"
+        },
+        "targetDate": {
+          "type": "string"
+        },
+        "implementedAt": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "tooling": {
+          "items": {
+            "$ref": "#/$defs/Tool"
+          },
+          "type": "array"
+        },
+        "dependencies": {
           "items": {
             "type": "string"
-          }
+          },
+          "type": "array"
+        },
+        "enables": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "frameworkMappings": {
+          "items": {
+            "$ref": "#/$defs/FrameworkMapping"
+          },
+          "type": "array"
+        },
+        "prismRef": {
+          "$ref": "#/$defs/PRISMRef"
+        },
+        "marketRef": {
+          "$ref": "#/$defs/MarketRef"
         }
-      }
-    },
-    "Layer": {
+      },
+      "additionalProperties": false,
       "type": "object",
-      "required": ["id", "name"],
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the layer (kebab-case)",
-          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
-        },
-        "name": {
-          "type": "string",
-          "description": "Display name for the layer"
-        },
-        "description": {
-          "type": "string",
-          "description": "Purpose/objective of this layer"
-        },
-        "order": {
-          "type": "integer",
-          "description": "Sort order (1 = top layer)",
-          "minimum": 1
-        },
-        "phase": {
-          "type": "string",
-          "description": "SDLC or lifecycle phase this layer represents",
-          "enum": ["plan", "design", "build", "test", "release", "deploy", "operate", "monitor", "respond", "recover"]
-        },
-        "nistCsfFunction": {
-          "type": "string",
-          "description": "NIST CSF 2.0 function mapping",
-          "enum": ["govern", "identify", "protect", "detect", "respond", "recover"]
-        }
-      }
+      "required": [
+        "id",
+        "name",
+        "layerId"
+      ]
     },
     "Category": {
-      "type": "object",
-      "required": ["id", "name"],
       "properties": {
         "id": {
-          "type": "string",
-          "description": "Unique identifier for the category (kebab-case)",
-          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": "Display name for the category"
+          "type": "string"
         },
         "description": {
           "type": "string"
         },
         "color": {
-          "type": "string",
-          "description": "Color for visual grouping (hex or named)",
-          "pattern": "^(#[0-9a-fA-F]{6}|[a-z]+)$"
+          "type": "string"
         }
-      }
-    },
-    "Capability": {
+      },
+      "additionalProperties": false,
       "type": "object",
-      "required": ["id", "name", "layerId"],
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the capability (kebab-case)",
-          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
-        },
-        "name": {
-          "type": "string",
-          "description": "Short display name (for diagram boxes)"
-        },
-        "fullName": {
-          "type": "string",
-          "description": "Full name (e.g., 'Static Application Security Testing' for 'SAST')"
-        },
-        "description": {
-          "type": "string",
-          "description": "What this capability provides"
-        },
-        "layerId": {
-          "type": "string",
-          "description": "Reference to the layer this capability belongs to"
-        },
-        "categoryId": {
-          "type": "string",
-          "description": "Reference to the category for visual grouping"
-        },
-        "status": {
-          "$ref": "#/$defs/CapabilityStatus"
-        },
-        "priority": {
-          "type": "string",
-          "description": "Implementation priority",
-          "enum": ["critical", "high", "medium", "low"]
-        },
-        "targetDate": {
-          "type": "string",
-          "format": "date",
-          "description": "Target date for planned capabilities to be implemented"
-        },
-        "implementedAt": {
-          "type": "string",
-          "format": "date",
-          "description": "Date when capability was implemented"
-        },
-        "owner": {
-          "type": "string",
-          "description": "Team or person responsible for this capability"
-        },
-        "tooling": {
-          "type": "array",
-          "description": "Tools/products implementing this capability",
-          "items": {
-            "$ref": "#/$defs/Tool"
-          }
-        },
-        "dependencies": {
-          "type": "array",
-          "description": "Capability IDs this capability depends on",
-          "items": {
-            "type": "string"
-          }
-        },
-        "enables": {
-          "type": "array",
-          "description": "Capability IDs that this capability enables",
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "description": "Tags for filtering and classification",
-          "items": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
-          }
-        },
-        "frameworkMappings": {
-          "type": "array",
-          "description": "Mappings to compliance/security frameworks",
-          "items": {
-            "$ref": "#/$defs/FrameworkMapping"
-          }
-        },
-        "prismRef": {
-          "$ref": "#/$defs/PRISMRef"
-        }
-      }
-    },
-    "CapabilityStatus": {
-      "type": "string",
-      "description": "Lifecycle status of the capability",
-      "enum": ["planned", "in-progress", "implemented", "operational", "deprecated"],
-      "default": "planned"
-    },
-    "Tool": {
-      "type": "object",
-      "required": ["name"],
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Tool or product name"
-        },
-        "vendor": {
-          "type": "string",
-          "description": "Vendor name"
-        },
-        "type": {
-          "type": "string",
-          "description": "Tool type",
-          "enum": ["commercial", "open-source", "internal", "managed-service"]
-        },
-        "url": {
-          "type": "string",
-          "format": "uri"
-        },
-        "status": {
-          "type": "string",
-          "enum": ["evaluating", "piloting", "deployed", "deprecated"]
-        }
-      }
+      "required": [
+        "id",
+        "name"
+      ]
     },
     "FrameworkMapping": {
-      "type": "object",
-      "required": ["framework", "controls"],
       "properties": {
         "framework": {
-          "type": "string",
-          "description": "Framework name",
-          "enum": ["nist-csf-2.0", "nist-800-53", "iso-27001", "soc2", "pci-dss", "cis", "mitre-attack", "owasp", "slsa", "ssdf"]
+          "type": "string"
         },
         "controls": {
-          "type": "array",
-          "description": "Control IDs from the framework",
           "items": {
             "type": "string"
-          }
+          },
+          "type": "array"
         }
-      }
-    },
-    "PRISMRef": {
+      },
+      "additionalProperties": false,
       "type": "object",
-      "description": "Reference to PRISM maturity model for this capability",
+      "required": [
+        "framework",
+        "controls"
+      ]
+    },
+    "GapContribution": {
       "properties": {
-        "domainId": {
-          "type": "string",
-          "description": "PRISM domain ID (e.g., 'security', 'operations')"
+        "capabilityId": {
+          "type": "string"
         },
-        "sliIds": {
-          "type": "array",
-          "description": "PRISM SLI IDs that measure this capability's maturity",
+        "segmentId": {
+          "type": "string"
+        },
+        "contribution": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "capabilityId"
+      ]
+    },
+    "Layer": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "order": {
+          "type": "integer"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "nistCsfFunction": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "LevelCriteria": {
+      "properties": {
+        "M1": {
+          "type": "string"
+        },
+        "M2": {
+          "type": "string"
+        },
+        "M3": {
+          "type": "string"
+        },
+        "M4": {
+          "type": "string"
+        },
+        "M5": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "MarketIntegration": {
+      "properties": {
+        "analysisRef": {
+          "type": "string"
+        },
+        "defaultMarket": {
+          "type": "string"
+        },
+        "focusSegments": {
           "items": {
             "type": "string"
-          }
-        },
-        "levelCriteria": {
-          "type": "object",
-          "description": "What each maturity level means for this capability",
-          "properties": {
-            "M1": { "type": "string" },
-            "M2": { "type": "string" },
-            "M3": { "type": "string" },
-            "M4": { "type": "string" },
-            "M5": { "type": "string" }
-          }
+          },
+          "type": "array"
         }
-      }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "MarketRef": {
+      "properties": {
+        "marketId": {
+          "type": "string"
+        },
+        "capabilityIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "segments": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "impact": {
+          "type": "string"
+        },
+        "gapContribution": {
+          "items": {
+            "$ref": "#/$defs/GapContribution"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Metadata": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ]
     },
     "PRISMIntegration": {
-      "type": "object",
-      "description": "Global PRISM integration configuration",
       "properties": {
         "modelRef": {
-          "type": "string",
-          "description": "Path or URL to the PRISM maturity model document"
+          "type": "string"
         },
         "stateRef": {
-          "type": "string",
-          "description": "Path or URL to the PRISM maturity state document"
+          "type": "string"
         },
         "planRef": {
-          "type": "string",
-          "description": "Path or URL to the PRISM maturity plan document"
+          "type": "string"
         },
         "defaultDomain": {
-          "type": "string",
-          "description": "Default PRISM domain for capabilities without explicit domainId"
+          "type": "string"
         }
-      }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PRISMRef": {
+      "properties": {
+        "domainId": {
+          "type": "string"
+        },
+        "sliIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "levelCriteria": {
+          "$ref": "#/$defs/LevelCriteria"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Tool": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "vendor": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name"
+      ]
     }
-  }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata"
+    },
+    "layers": {
+      "items": {
+        "$ref": "#/$defs/Layer"
+      },
+      "type": "array"
+    },
+    "categories": {
+      "items": {
+        "$ref": "#/$defs/Category"
+      },
+      "type": "array"
+    },
+    "capabilities": {
+      "items": {
+        "$ref": "#/$defs/Capability"
+      },
+      "type": "array"
+    },
+    "foundational": {
+      "items": {
+        "$ref": "#/$defs/Capability"
+      },
+      "type": "array"
+    },
+    "prismIntegration": {
+      "$ref": "#/$defs/PRISMIntegration"
+    },
+    "marketIntegration": {
+      "$ref": "#/$defs/MarketIntegration"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "metadata",
+    "layers",
+    "capabilities"
+  ],
+  "title": "Capability Stack Specification",
+  "description": "A specification for defining capability stacks with layers, capabilities, and PRISM maturity integration"
 }
