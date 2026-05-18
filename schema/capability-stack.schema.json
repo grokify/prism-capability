@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/plexusone/capability-stack-spec/schema/capability-stack.schema.json",
+  "$id": "https://github.com/grokify/prism-capability/schema/capability-stack.schema.json",
   "title": "Capability Stack Specification",
   "description": "A specification for defining capability stacks with layers, capabilities, and PRISM maturity integration",
   "type": "object",
