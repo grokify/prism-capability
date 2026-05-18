@@ -13,12 +13,12 @@
         { "description": "Repository renamed from plexusone/capability-stack-spec to grokify/prism-capability" }
       ],
       "changed": [
-        { "description": "Go module path changed from github.com/plexusone/capability-stack-spec to github.com/grokify/prism-capability" },
-        { "description": "JSON Schema $id updated to new repository path" },
-        { "description": "README badges and installation instructions updated" }
+        { "description": "Go module path changed from github.com/plexusone/capability-stack-spec to github.com/grokify/prism-capability", "commit": "5e3be62" },
+        { "description": "JSON Schema $id updated to new repository path", "commit": "fabbce9" },
+        { "description": "README badges and installation instructions updated", "commit": "5e3be62" }
       ],
       "documentation": [
-        { "description": "Updated all import paths and installation instructions to reflect new repository location" }
+        { "description": "Updated all import paths and installation instructions to reflect new repository location", "commit": "9f84f77" }
       ]
     },
     {
