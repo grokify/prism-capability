@@ -1,4 +1,4 @@
-module github.com/plexusone/capability-stack-spec
+module github.com/grokify/prism-capability
 
 go 1.24
 

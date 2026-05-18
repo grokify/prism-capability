@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	capstack "github.com/plexusone/capability-stack-spec"
+	capstack "github.com/grokify/prism-capability"
 )
 
 func TestRenderD2(t *testing.T) {

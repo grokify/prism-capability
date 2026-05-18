@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/invopop/jsonschema"
-	capstack "github.com/plexusone/capability-stack-spec"
+	capstack "github.com/grokify/prism-capability"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 	r.ExpandedStruct = true
 
 	schema := r.Reflect(&capstack.CapabilityStack{})
-	schema.ID = "https://github.com/plexusone/capability-stack-spec/schema/capability-stack.schema.json"
+	schema.ID = "https://github.com/grokify/prism-capability/schema/capability-stack.schema.json"
 	schema.Title = "Capability Stack Specification"
 	schema.Description = "A specification for defining capability stacks with layers, capabilities, and PRISM maturity integration"
 

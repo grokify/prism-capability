@@ -5,7 +5,7 @@ import (
 	"io"
 	"strings"
 
-	capstack "github.com/plexusone/capability-stack-spec"
+	capstack "github.com/grokify/prism-capability"
 )
 
 // D2Style defines the rendering style for D2 diagrams.

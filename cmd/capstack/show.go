@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	capstack "github.com/plexusone/capability-stack-spec"
+	capstack "github.com/grokify/prism-capability"
 	"github.com/spf13/cobra"
 )
 

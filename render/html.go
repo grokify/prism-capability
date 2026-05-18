@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	capstack "github.com/plexusone/capability-stack-spec"
+	capstack "github.com/grokify/prism-capability"
 )
 
 // HTMLOptions configures static HTML rendering.

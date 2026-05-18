@@ -1,8 +1,8 @@
-# Capability Stack Spec
+# PRISM Capability
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/plexusone/capability-stack-spec.svg)](https://pkg.go.dev/github.com/plexusone/capability-stack-spec)
+[![Go Reference](https://pkg.go.dev/badge/github.com/grokify/prism-capability.svg)](https://pkg.go.dev/github.com/grokify/prism-capability)
 
-A specification for defining capability stacks with layers, capabilities, and PRISM maturity integration.
+Part of the [PRISM ecosystem](https://github.com/grokify/prism). Defines capability stacks with layers, capabilities, and maturity integration.
 
 ## Overview
 
@@ -45,13 +45,13 @@ Capability Stack Spec defines **what capabilities exist** in an organization's t
 ### CLI
 
 ```bash
-go install github.com/plexusone/capability-stack-spec/cmd/capstack@latest
+go install github.com/grokify/prism-capability/cmd/capstack@latest
 ```
 
 ### Library
 
 ```bash
-go get github.com/plexusone/capability-stack-spec
+go get github.com/grokify/prism-capability
 ```
 
 ## CLI Usage
@@ -290,7 +290,7 @@ import (
     "fmt"
     "log"
 
-    capstack "github.com/plexusone/capability-stack-spec"
+    capstack "github.com/grokify/prism-capability"
 )
 
 func main() {
@@ -370,7 +370,7 @@ if err := doc.SaveToFile("my-stack.json"); err != nil {
 ### Accessing the JSON Schema
 
 ```go
-import "github.com/plexusone/capability-stack-spec/schema"
+import "github.com/grokify/prism-capability/schema"
 
 // Get schema as bytes
 schemaBytes := schema.CapabilityStackSchema()

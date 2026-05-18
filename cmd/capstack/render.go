@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	capstack "github.com/plexusone/capability-stack-spec"
-	"github.com/plexusone/capability-stack-spec/render"
+	capstack "github.com/grokify/prism-capability"
+	"github.com/grokify/prism-capability/render"
 	"github.com/spf13/cobra"
 )
 
