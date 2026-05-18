@@ -1,11 +1,26 @@
 {
   "irVersion": "1.0",
-  "project": "capability-stack-spec",
-  "repository": "https://github.com/plexusone/capability-stack-spec",
+  "project": "prism-capability",
+  "repository": "https://github.com/grokify/prism-capability",
   "versioning": "semver",
   "commitConvention": "conventional",
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
+    {
+      "version": "v0.2.0",
+      "date": "2026-05-17",
+      "highlights": [
+        { "description": "Repository renamed from plexusone/capability-stack-spec to grokify/prism-capability" }
+      ],
+      "changed": [
+        { "description": "Go module path changed from github.com/plexusone/capability-stack-spec to github.com/grokify/prism-capability" },
+        { "description": "JSON Schema $id updated to new repository path" },
+        { "description": "README badges and installation instructions updated" }
+      ],
+      "documentation": [
+        { "description": "Updated all import paths and installation instructions to reflect new repository location" }
+      ]
+    },
     {
       "version": "v0.1.0",
       "date": "2026-05-17",
