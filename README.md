@@ -25,15 +25,15 @@
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
  [license-url]: https://github.com/grokify/prism-capability/blob/main/LICENSE
 
-Part of the [PRISM ecosystem](https://github.com/grokify/prism). Defines capability stacks with layers, capabilities, and maturity integration.
+Part of the PRISM ecosystem. Defines capability stacks with layers, capabilities, and maturity integration.
 
 ## Overview
 
-Capability Stack Spec defines **what capabilities exist** in an organization's technology landscape. It integrates with [PRISM](https://github.com/grokify/prism) to track **maturity levels** and **improvement roadmaps** for each capability.
+PRISM Capability defines **what capabilities exist** in an organization's technology landscape. It integrates with [prism-intelligence](https://github.com/grokify/prism-intelligence) to track **maturity levels** and [prism-execution](https://github.com/grokify/prism-execution) for **improvement roadmaps**.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    capability-stack-spec                            │
+│                       prism-capability                              │
 │              "These are the capabilities we need"                   │
 │         Layers, capabilities, categories, relationships             │
 └─────────────────────────────────────────────────────────────────────┘
@@ -41,25 +41,17 @@ Capability Stack Spec defines **what capabilities exist** in an organization's t
                               │ references
                               ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    prism-maturity-model                             │
-│              "What does M4 look like for each capability?"          │
-│         SLIs per capability, thresholds per level                   │
+│                      prism-intelligence                             │
+│         Maturity models, SLIs/SLOs, state tracking                  │
+│  "What does M4 look like?" + "Capability X is at M2"                │
 └─────────────────────────────────────────────────────────────────────┘
                               │
                               │ references
                               ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    prism-maturity-state                             │
-│              "Capability X is at M2, Capability Y is at M4"         │
-│         Current levels, measurements, gaps                          │
-└─────────────────────────────────────────────────────────────────────┘
-                              │
-                              │ references
-                              ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    prism-maturity-plan                              │
-│              "Move SAST from M2→M4 by Q3 via these initiatives"     │
-│         Goals, phases, initiatives per capability                   │
+│                       prism-execution                               │
+│              OKRs, roadmaps, improvement initiatives                │
+│       "Move SAST from M2→M4 by Q3 via these initiatives"            │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -446,10 +438,10 @@ Individual boxes within layers representing specific capabilities. Each capabili
 
 Capabilities progress through lifecycle stages:
 
-| Status | Description | In PRISM State? |
-|--------|-------------|-----------------|
-| `planned` | On roadmap, not yet started | No - tracked as roadmap item |
-| `in-progress` | Currently being implemented | No - tracked in PRISM plan |
+| Status | Description | In prism-intelligence? |
+|--------|-------------|------------------------|
+| `planned` | On roadmap, not yet started | No - tracked in prism-execution |
+| `in-progress` | Currently being implemented | No - tracked in prism-execution |
 | `implemented` | Exists but may need maturity improvement | Yes - has M1 baseline |
 | `operational` | Running in production, actively maintained | Yes - has M2+ level |
 | `deprecated` | Being phased out | Yes - may have declining level |
@@ -460,14 +452,14 @@ Capabilities progress through lifecycle stages:
 
 - Most capabilities start as `planned`
 - `targetDate` indicates when capability should be implemented
-- No PRISM state entries until capability reaches `implemented`
+- No prism-intelligence entries until capability reaches `implemented`
 - Focus on building foundational capabilities first
 
 **Brownfield (existing system):**
 
 - Most capabilities are `implemented` or `operational`
-- PRISM state tracks current maturity levels
-- PRISM plan tracks initiatives to improve maturity
+- prism-intelligence tracks current maturity levels
+- prism-execution tracks initiatives to improve maturity
 - Focus on maturing existing capabilities
 
 ## PRISM Integration
@@ -495,20 +487,19 @@ Each capability can reference PRISM for maturity tracking:
 
 ### Document Relationships
 
-| Document | Contains | Example |
-|----------|----------|---------|
-| **Capability Stack** | Capability definitions, lifecycle status | `capabilities/security-saas.json` |
-| **PRISM Model** | SLI definitions, maturity thresholds | `prism/maturity-model.json` |
-| **PRISM State** | Current maturity levels per capability | `prism/maturity-state.json` |
-| **PRISM Plan** | Initiatives to advance maturity | `prism/maturity-plan.json` |
+| Project | Contains | Example |
+|---------|----------|---------|
+| **prism-capability** | Capability definitions, lifecycle status | `capability/security-saas.json` |
+| **prism-intelligence** | Maturity models, SLIs/SLOs, current state | `intelligence/security-model.json` |
+| **prism-execution** | OKRs, roadmaps, improvement initiatives | `execution/security-plan.json` |
 
 ### Workflow
 
-1. **Define capabilities** in capability-stack-spec
-2. **Define SLIs** in PRISM maturity model (one or more per capability)
-3. **Set thresholds** per maturity level (M1-M5)
-4. **Track state** in PRISM state document as capabilities become operational
-5. **Plan improvements** in PRISM plan document with initiatives per capability
+1. **Define capabilities** in prism-capability
+2. **Define SLIs** in prism-intelligence maturity model (one or more per capability)
+3. **Set thresholds** per maturity level (M1-M5) in prism-intelligence
+4. **Track state** in prism-intelligence as capabilities become operational
+5. **Plan improvements** in prism-execution with initiatives per capability
 
 ## Categories
 
@@ -594,8 +585,8 @@ See [schema/capability-stack.schema.json](schema/capability-stack.schema.json) f
 
 | Project | Purpose |
 |---------|---------|
-| [PRISM](https://github.com/grokify/prism) | Maturity models, SLIs/SLOs, state tracking, improvement planning |
-| [Structured Plan](https://github.com/grokify/structured-plan) | OKRs, V2MOM, roadmaps |
+| [prism-intelligence](https://github.com/grokify/prism-intelligence) | Maturity models, SLIs/SLOs, state tracking |
+| [prism-execution](https://github.com/grokify/prism-execution) | OKRs, roadmaps, improvement initiatives |
 
 ## License
 
