@@ -52,4 +52,7 @@ type Capability struct {
 
 	// PRISMRef links to PRISM maturity model for this capability.
 	PRISMRef *PRISMRef `json:"prismRef,omitempty"`
+
+	// MarketRef links to market-strategy-engine capabilities this org capability enables.
+	MarketRef *MarketRef `json:"marketRef,omitempty"`
 }

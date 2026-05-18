@@ -27,6 +27,9 @@ type CapabilityStack struct {
 
 	// PRISMIntegration configures global PRISM integration.
 	PRISMIntegration *PRISMIntegration `json:"prismIntegration,omitempty"`
+
+	// MarketIntegration configures global market-strategy-engine integration.
+	MarketIntegration *MarketIntegration `json:"marketIntegration,omitempty"`
 }
 
 // LoadFromFile reads a CapabilityStack from a JSON file.
@@ -168,4 +171,47 @@ func (cs *CapabilityStack) CapabilityIDs() []string {
 		ids[i] = cap.ID
 	}
 	return ids
+}
+
+// CapabilitiesByMarketCapability returns org capabilities that enable a market capability.
+func (cs *CapabilityStack) CapabilitiesByMarketCapability(marketCapID string) []Capability {
+	var result []Capability
+	for _, cap := range cs.AllCapabilities() {
+		if cap.MarketRef != nil {
+			for _, mcid := range cap.MarketRef.CapabilityIDs {
+				if mcid == marketCapID {
+					result = append(result, cap)
+					break
+				}
+			}
+		}
+	}
+	return result
+}
+
+// CapabilitiesByMarket returns org capabilities linked to a specific market.
+func (cs *CapabilityStack) CapabilitiesByMarket(marketID string) []Capability {
+	var result []Capability
+	for _, cap := range cs.AllCapabilities() {
+		if cap.MarketRef != nil && cap.MarketRef.MarketID == marketID {
+			result = append(result, cap)
+		}
+	}
+	return result
+}
+
+// CapabilitiesForSegment returns org capabilities that benefit a market segment.
+func (cs *CapabilityStack) CapabilitiesForSegment(segmentID string) []Capability {
+	var result []Capability
+	for _, cap := range cs.AllCapabilities() {
+		if cap.MarketRef != nil {
+			for _, seg := range cap.MarketRef.Segments {
+				if seg == segmentID {
+					result = append(result, cap)
+					break
+				}
+			}
+		}
+	}
+	return result
 }
