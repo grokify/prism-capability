@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/invopop/jsonschema"
 	capstack "github.com/grokify/prism-capability"
+	"github.com/invopop/jsonschema"
 )
 
 func main() {
