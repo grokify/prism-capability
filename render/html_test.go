@@ -46,7 +46,7 @@ func TestRenderHTML(t *testing.T) {
 		"Layer One",
 		"Capability A",
 		"#10b981", // Operational color
-		"cs-legend",
+		"cs-filters", // Interactive filter controls (replaced cs-legend)
 	}
 
 	for _, check := range checks {
