@@ -426,12 +426,89 @@ Individual boxes within layers representing specific capabilities. Each capabili
   "layerId": "shift-left-testing",
   "categoryId": "appsec",
   "status": "implemented",
+  "importance": "critical",
+  "order": 1,
   "owner": "AppSec Team",
   "prismRef": {
     "domainId": "security",
     "sliIds": ["sli-sast-coverage", "sli-sast-findings"]
   }
 }
+```
+
+### Importance
+
+Static importance weights for capabilities, layers, and categories. Used with maturity state to calculate dynamic priority (P0-P3).
+
+| Level | Weight | Description |
+|-------|--------|-------------|
+| `critical` | 4 | Critical "-ilities" (security, availability) |
+| `high` | 3 | High importance capabilities |
+| `medium` | 2 | Standard importance (default) |
+| `low` | 1 | Nice-to-have capabilities |
+
+### Ordering
+
+Capabilities can have an explicit `order` field for sorting:
+
+```json
+{
+  "capabilities": [
+    {"id": "slo-framework", "name": "SLO Framework", "order": 1, ...},
+    {"id": "alerting", "name": "Alerting", "order": 2, ...},
+    {"id": "dashboards", "name": "Dashboards", "order": 3, ...}
+  ]
+}
+```
+
+**Validation rules:**
+
+- If any capability has a non-zero Order, all Order values must be unique
+- Capabilities with Order=0 are sorted after those with explicit ordering
+- When no explicit ordering is set, capabilities sort alphabetically by name
+
+### Sorting
+
+Sort capabilities programmatically:
+
+```go
+// Sort methods available
+capstack.SortByOrder      // By explicit Order field (default)
+capstack.SortByName       // Alphabetically by Name
+capstack.SortByImportance // By Importance weight (critical first)
+capstack.SortByPriority   // By Priority (critical first)
+capstack.SortByStatus     // By Status (operational first)
+
+// Sort in place
+cs.SortCapabilities(capstack.SortByImportance)
+
+// Get sorted copy
+sorted := cs.SortedCapabilities(capstack.SortByOrder)
+```
+
+### Dynamic Priority (P0-P3)
+
+Dynamic priority is calculated from importance and maturity gap:
+
+```
+Priority Score = Importance Weight × (Target Level - Current Level)
+```
+
+| Score | Priority | Description |
+|-------|----------|-------------|
+| ≥8 | P0 | Immediate action required |
+| ≥4 | P1 | High priority improvement |
+| ≥2 | P2 | Scheduled improvement |
+| <2 | P3 | Low priority enhancement |
+
+```go
+// Calculate dynamic priority
+priority := capstack.CalculatePriority("critical", 1, 3) // Returns "P0" (4 × 2 = 8)
+priority := capstack.CalculatePriority("medium", 2, 3)   // Returns "P2" (2 × 1 = 2)
+
+// Get priority weight for sorting
+weight := capstack.DynamicPriorityWeight("P0") // Returns 4
+```
 ```
 
 ### Capability Lifecycle
@@ -559,10 +636,11 @@ The Go library validates:
 
 - **Required fields** - id, name, layerId for capabilities
 - **Kebab-case IDs** - All IDs must be kebab-case format
-- **Enum values** - Status, priority, domain, phase, etc.
+- **Enum values** - Status, priority, importance, domain, phase, etc.
 - **Reference integrity** - layerId, categoryId, dependencies reference valid IDs
 - **Unique IDs** - No duplicate layer, category, or capability IDs
 - **Dependency cycles** - Circular dependencies are detected
+- **Order uniqueness** - If any capability has non-zero Order, all Order values must be unique
 
 Example validation errors:
 
