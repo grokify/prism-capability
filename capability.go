@@ -26,6 +26,16 @@ type Capability struct {
 	// Priority is the implementation priority (critical, high, medium, low).
 	Priority string `json:"priority,omitempty"`
 
+	// Importance is the static weight for this capability (critical, high, medium, low).
+	// Represents the inherent importance for "-ilities" (security, availability, resiliency).
+	// Used with maturity state to calculate dynamic priority (P0-P3).
+	Importance string `json:"importance,omitempty"`
+
+	// Order is the explicit sort order for this capability.
+	// When non-zero, capabilities are sorted by Order ascending.
+	// If any capability has a non-zero Order, all should have unique Order values.
+	Order int `json:"order,omitempty"`
+
 	// TargetDate is when planned capabilities should be implemented (YYYY-MM-DD).
 	TargetDate string `json:"targetDate,omitempty"`
 

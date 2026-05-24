@@ -20,4 +20,8 @@ type Layer struct {
 
 	// NistCsfFunction maps the layer to a NIST CSF 2.0 function.
 	NistCsfFunction string `json:"nistCsfFunction,omitempty"`
+
+	// Importance is the static weight for this layer (critical, high, medium, low).
+	// Used for "-ilities" prioritization when capabilities span multiple layers.
+	Importance string `json:"importance,omitempty"`
 }

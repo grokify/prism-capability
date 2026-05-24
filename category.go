@@ -13,4 +13,8 @@ type Category struct {
 
 	// Color is used for visual grouping (hex or named color).
 	Color string `json:"color,omitempty"`
+
+	// Importance is the static weight for this category (critical, high, medium, low).
+	// Used for "-ilities" prioritization (security, availability, resiliency, etc.).
+	Importance string `json:"importance,omitempty"`
 }
