@@ -47,6 +47,10 @@ type D2Options struct {
 	// GridColumns sets the number of columns per layer row (0 = auto).
 	// Only used when Style is D2StyleGrid.
 	GridColumns int
+
+	// Overlays provides additional display data (badges, tooltips) for capabilities.
+	// This allows external modules to inject data like maturity levels.
+	Overlays OverlayProvider
 }
 
 // DefaultD2Options returns sensible defaults for D2 rendering.
@@ -235,6 +239,18 @@ func renderCapabilityGrid(b *strings.Builder, cap capstack.Capability, categoryC
 	capID := sanitizeD2ID(cap.ID)
 	label := cap.Name
 
+	// Check for overlay badge
+	overlay := opts.Overlays.Get(cap.ID)
+	if overlay.BadgeText != "" {
+		// Include badge in label using D2 markdown
+		label = fmt.Sprintf("|md\n      %s\n      <span style=\"font-size:10px;background:%s;color:%s;padding:2px 6px;border-radius:3px;\">%s</span>\n      |",
+			cap.Name,
+			getBadgeColor(overlay),
+			getBadgeTextColor(overlay),
+			overlay.BadgeText,
+		)
+	}
+
 	b.WriteString(fmt.Sprintf("    %s: %s {\n", capID, label))
 	b.WriteString("      shape: rectangle\n")
 	b.WriteString("      style.border-radius: 6\n")
@@ -256,6 +272,11 @@ func renderCapabilityGrid(b *strings.Builder, cap capstack.Capability, categoryC
 	} else if catColor, ok := categoryColors[cap.CategoryID]; ok {
 		b.WriteString(fmt.Sprintf("      style.fill: \"%s\"\n", catColor))
 		b.WriteString("      style.font-color: \"#ffffff\"\n")
+	}
+
+	// Add tooltip if overlay has extra info
+	if overlay.TooltipExtra != "" {
+		b.WriteString(fmt.Sprintf("      tooltip: \"%s\"\n", overlay.TooltipExtra))
 	}
 
 	b.WriteString("    }\n")
@@ -317,6 +338,18 @@ func renderCapability(b *strings.Builder, cap capstack.Capability, categoryColor
 	capID := sanitizeD2ID(cap.ID)
 	label := cap.Name
 
+	// Check for overlay badge
+	overlay := opts.Overlays.Get(cap.ID)
+	if overlay.BadgeText != "" {
+		// Include badge in label using D2 markdown
+		label = fmt.Sprintf("|md\n    %s\n    <span style=\"font-size:10px;background:%s;color:%s;padding:2px 6px;border-radius:3px;\">%s</span>\n    |",
+			cap.Name,
+			getBadgeColor(overlay),
+			getBadgeTextColor(overlay),
+			overlay.BadgeText,
+		)
+	}
+
 	b.WriteString(fmt.Sprintf("  %s: %s {\n", capID, label))
 	b.WriteString("    shape: rectangle\n")
 
@@ -344,6 +377,11 @@ func renderCapability(b *strings.Builder, cap capstack.Capability, categoryColor
 	} else if catColor, ok := categoryColors[cap.CategoryID]; ok {
 		b.WriteString(fmt.Sprintf("    style.fill: \"%s\"\n", catColor))
 		b.WriteString("    style.font-color: \"#ffffff\"\n")
+	}
+
+	// Add tooltip if overlay has extra info
+	if overlay.TooltipExtra != "" {
+		b.WriteString(fmt.Sprintf("    tooltip: \"%s\"\n", overlay.TooltipExtra))
 	}
 
 	b.WriteString("  }\n")
@@ -444,6 +482,26 @@ func getCapabilityPath(doc *capstack.CapabilityStack, cap capstack.Capability) s
 	// Otherwise, find the layer
 	layerID := sanitizeD2ID(cap.LayerID)
 	return layerID + "." + capID
+}
+
+// getBadgeColor returns the badge background color.
+func getBadgeColor(overlay CapabilityOverlay) string {
+	if overlay.BadgeColor != "" {
+		return overlay.BadgeColor
+	}
+	// Default maturity-style colors based on badge text
+	if len(overlay.BadgeText) > 0 && overlay.BadgeText[0] == 'M' {
+		return "#6366f1" // indigo for maturity
+	}
+	return "#64748b" // slate gray default
+}
+
+// getBadgeTextColor returns the badge text color.
+func getBadgeTextColor(overlay CapabilityOverlay) string {
+	if overlay.BadgeTextColor != "" {
+		return overlay.BadgeTextColor
+	}
+	return "#ffffff" // white default
 }
 
 // RenderD2String is a convenience function that returns the D2 diagram as a string.
