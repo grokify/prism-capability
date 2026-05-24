@@ -7,6 +7,63 @@
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
     {
+      "version": "v0.4.0",
+      "date": "2026-05-24",
+      "highlights": [
+        { "description": "Add importance field and dynamic priority calculation (P0-P3) for capabilities" },
+        { "description": "Add priority framework for organizing capabilities into tiers" },
+        { "description": "Add overlay provider for external data injection into renderers" },
+        { "description": "Add interactive filters and maturity badges to HTML renderer" }
+      ],
+      "added": [
+        { "description": "Importance field (critical/high/medium/low) on Capability, Category, and Layer types", "commit": "ed9f69b" },
+        { "description": "Order field on Capability for explicit sorting", "commit": "ed9f69b" },
+        { "description": "ImportanceWeight() and CalculatePriority() functions for dynamic P0-P3 priority", "commit": "ed9f69b" },
+        { "description": "PriorityFramework and PriorityTier types for organizing capabilities into tiers", "commit": "558c154" },
+        { "description": "SortCapabilities() and SortedCapabilities() methods with multiple sort modes", "commit": "558c154" },
+        { "description": "Order uniqueness validation when any non-zero Order exists", "commit": "6e96249" },
+        { "description": "CapabilityOverlay and OverlayProvider types for external data injection", "commit": "a644dfa" },
+        { "description": "Overlay support in D2 renderer with badge text and tooltips", "commit": "939c08c" },
+        { "description": "Interactive status and maturity filters in HTML renderer", "commit": "0fbfe0b" },
+        { "description": "Badge display for capabilities with overlay data in HTML", "commit": "0fbfe0b" }
+      ],
+      "refactored": [
+        { "description": "Extract CLI commands from cmd/capstack/ to reusable cli/ package", "commit": "51343d3" }
+      ],
+      "documentation": [
+        { "description": "Document importance, ordering, sorting, and priority framework in README", "commit": "23431a6" }
+      ],
+      "tests": [
+        { "description": "Update HTML test for filter controls", "commit": "8063605" }
+      ]
+    },
+    {
+      "version": "v0.3.0",
+      "date": "2026-05-18",
+      "highlights": [
+        { "description": "Add MarketRef type for linking organizational capabilities to market capabilities" },
+        { "description": "Integrate prism-core v0.1.0 for shared types across PRISM ecosystem" }
+      ],
+      "added": [
+        { "description": "MarketRef type for linking capabilities to market-strategy-engine", "commit": "0d3a8f2" },
+        { "description": "GapContribution type for describing how capabilities address market gaps", "commit": "0d3a8f2" },
+        { "description": "MarketIntegration type for document-level market settings", "commit": "0d3a8f2" },
+        { "description": "CapabilitiesByMarketCapability() method for querying by market capability ID", "commit": "0d3a8f2" },
+        { "description": "CapabilitiesByMarket() method for querying by market ID", "commit": "0d3a8f2" },
+        { "description": "CapabilitiesForSegment() method for querying by market segment", "commit": "0d3a8f2" }
+      ],
+      "changed": [
+        { "description": "Import Priority and Domain types from prism-core instead of local definitions", "commit": "e8b2c14" },
+        { "description": "Import NIST CSF functions from prism-core", "commit": "e8b2c14" }
+      ],
+      "documentation": [
+        { "description": "Add v0.3.0 release notes with MarketRef examples", "commit": "cb24b35" }
+      ],
+      "dependencies": [
+        { "description": "Add github.com/grokify/prism-core v0.1.0", "commit": "e8b2c14" }
+      ]
+    },
+    {
       "version": "v0.2.0",
       "date": "2026-05-17",
       "highlights": [
