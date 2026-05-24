@@ -1,4 +1,5 @@
-package main
+// Package cli provides the exported Cobra command tree for the capability stack CLI.
+package cli
 
 import (
 	"fmt"

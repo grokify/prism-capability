@@ -1,4 +1,5 @@
-package main
+// Package cli provides the exported Cobra command tree for the capability stack CLI.
+package cli
 
 import (
 	"fmt"
@@ -41,12 +42,12 @@ Styles (D2 only):
   grid      Clean grid layout for executives (no arrows, aligned boxes)
 
 Examples:
-  capstack render stack.json -o stack.d2
-  capstack render stack.json --style=grid -o exec-view.d2
-  capstack render stack.json -f d2 | d2 - stack.svg
-  capstack render stack.json --style=grid | d2 - exec.svg
-  capstack render stack.json -f html -o stack.html
-  capstack render stack.json -f html --standalone --dark -o full.html`,
+  prism cap render stack.json -o stack.d2
+  prism cap render stack.json --style=grid -o exec-view.d2
+  prism cap render stack.json -f d2 | d2 - stack.svg
+  prism cap render stack.json --style=grid | d2 - exec.svg
+  prism cap render stack.json -f html -o stack.html
+  prism cap render stack.json -f html --standalone --dark -o full.html`,
 	Args: cobra.ExactArgs(1),
 	RunE: runRender,
 }
@@ -62,8 +63,6 @@ func init() {
 	renderCmd.Flags().StringVar(&renderColorBy, "color-by", "status", "Color scheme: status or category (D2 only)")
 	renderCmd.Flags().BoolVar(&renderDarkTheme, "dark", false, "Use dark theme (HTML only)")
 	renderCmd.Flags().BoolVar(&renderStandalone, "standalone", false, "Generate complete HTML document (HTML only)")
-
-	rootCmd.AddCommand(renderCmd)
 }
 
 func runRender(cmd *cobra.Command, args []string) error {
