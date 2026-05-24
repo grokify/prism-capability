@@ -432,6 +432,56 @@ func (cs *CapabilityStack) Validate() ValidationErrors {
 	cycleErrs := cs.detectDependencyCycles()
 	errs = append(errs, cycleErrs...)
 
+	// Validate capability Order uniqueness (only if any non-zero Order exists)
+	orderErrs := cs.validateCapabilityOrder()
+	errs = append(errs, orderErrs...)
+
+	return errs
+}
+
+// validateCapabilityOrder checks that Order values are globally unique when any non-zero Order exists.
+func (cs *CapabilityStack) validateCapabilityOrder() ValidationErrors {
+	var errs ValidationErrors
+
+	// Check if any capability has explicit ordering
+	hasExplicitOrder := false
+	for _, cap := range cs.AllCapabilities() {
+		if cap.Order != 0 {
+			hasExplicitOrder = true
+			break
+		}
+	}
+
+	if !hasExplicitOrder {
+		return nil // No explicit ordering, skip validation
+	}
+
+	// Check for duplicate Order values
+	type orderInfo struct {
+		capID  string
+		prefix string
+	}
+	seen := make(map[int]orderInfo)
+	allCaps := cs.AllCapabilities()
+
+	for i, cap := range allCaps {
+		var prefix string
+		if i < len(cs.Capabilities) {
+			prefix = fmt.Sprintf("capabilities[%d]", i)
+		} else {
+			prefix = fmt.Sprintf("foundational[%d]", i-len(cs.Capabilities))
+		}
+
+		if existing, ok := seen[cap.Order]; ok {
+			errs = append(errs, ValidationError{
+				Field:   prefix + ".order",
+				Value:   fmt.Sprintf("%d", cap.Order),
+				Message: fmt.Sprintf("duplicate order value, also used by %s (%s)", existing.capID, existing.prefix),
+			})
+		}
+		seen[cap.Order] = orderInfo{capID: cap.ID, prefix: prefix}
+	}
+
 	return errs
 }
 
