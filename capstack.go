@@ -3,6 +3,8 @@ package capstack
 import (
 	"encoding/json"
 	"os"
+	"sort"
+	"strings"
 )
 
 // CapabilityStack is the root document for a capability stack specification.
@@ -30,6 +32,10 @@ type CapabilityStack struct {
 
 	// MarketIntegration configures global market-strategy-engine integration.
 	MarketIntegration *MarketIntegration `json:"marketIntegration,omitempty"`
+
+	// PriorityFramework defines the priority tier structure for organizing capabilities.
+	// When present, an HTML page explaining the priority tiers can be generated.
+	PriorityFramework *PriorityFramework `json:"priorityFramework,omitempty"`
 }
 
 // LoadFromFile reads a CapabilityStack from a JSON file.
@@ -214,4 +220,131 @@ func (cs *CapabilityStack) CapabilitiesForSegment(segmentID string) []Capability
 		}
 	}
 	return result
+}
+
+// SortMethod defines how capabilities should be sorted.
+type SortMethod string
+
+const (
+	// SortByOrder sorts by explicit Order field (default).
+	SortByOrder SortMethod = "order"
+	// SortByName sorts alphabetically by Name.
+	SortByName SortMethod = "name"
+	// SortByImportance sorts by Importance weight (critical first).
+	SortByImportance SortMethod = "importance"
+	// SortByPriority sorts by Priority (critical first, for static priority field).
+	SortByPriority SortMethod = "priority"
+	// SortByStatus sorts by Status (operational first).
+	SortByStatus SortMethod = "status"
+)
+
+// AllSortMethods returns all valid sort methods.
+func AllSortMethods() []SortMethod {
+	return []SortMethod{
+		SortByOrder,
+		SortByName,
+		SortByImportance,
+		SortByPriority,
+		SortByStatus,
+	}
+}
+
+// ValidSortMethod checks if a sort method is valid.
+func ValidSortMethod(method string) bool {
+	for _, m := range AllSortMethods() {
+		if string(m) == method {
+			return true
+		}
+	}
+	return false
+}
+
+// SortCapabilities sorts the capabilities slice in place by the given method.
+func (cs *CapabilityStack) SortCapabilities(method SortMethod) {
+	sort.SliceStable(cs.Capabilities, func(i, j int) bool {
+		return compareCapabilities(cs.Capabilities[i], cs.Capabilities[j], method)
+	})
+	sort.SliceStable(cs.Foundational, func(i, j int) bool {
+		return compareCapabilities(cs.Foundational[i], cs.Foundational[j], method)
+	})
+}
+
+// SortedCapabilities returns a sorted copy of all capabilities.
+func (cs *CapabilityStack) SortedCapabilities(method SortMethod) []Capability {
+	caps := cs.AllCapabilities()
+	sort.SliceStable(caps, func(i, j int) bool {
+		return compareCapabilities(caps[i], caps[j], method)
+	})
+	return caps
+}
+
+// compareCapabilities returns true if a should come before b.
+func compareCapabilities(a, b Capability, method SortMethod) bool {
+	switch method {
+	case SortByOrder:
+		// If both have explicit order, use it
+		if a.Order != 0 && b.Order != 0 {
+			return a.Order < b.Order
+		}
+		// Items with explicit order come before items without
+		if a.Order != 0 {
+			return true
+		}
+		if b.Order != 0 {
+			return false
+		}
+		// Fall back to name for items without order
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+
+	case SortByName:
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+
+	case SortByImportance:
+		// Higher importance first (critical=4, high=3, medium=2, low=1)
+		aWeight := ImportanceWeight(a.Importance)
+		bWeight := ImportanceWeight(b.Importance)
+		if aWeight != bWeight {
+			return aWeight > bWeight
+		}
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+
+	case SortByPriority:
+		// Higher priority first (critical=4, high=3, medium=2, low=1)
+		aWeight := PriorityWeight(a.Priority)
+		bWeight := PriorityWeight(b.Priority)
+		if aWeight != bWeight {
+			return aWeight > bWeight
+		}
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+
+	case SortByStatus:
+		// Operational first, then implemented, in-progress, planned, deprecated
+		aWeight := statusWeight(a.Status)
+		bWeight := statusWeight(b.Status)
+		if aWeight != bWeight {
+			return aWeight > bWeight
+		}
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+
+	default:
+		return strings.ToLower(a.Name) < strings.ToLower(b.Name)
+	}
+}
+
+// statusWeight returns a sort weight for capability status.
+func statusWeight(status string) int {
+	switch status {
+	case StatusOperational:
+		return 5
+	case StatusImplemented:
+		return 4
+	case StatusInProgress:
+		return 3
+	case StatusPlanned:
+		return 2
+	case StatusDeprecated:
+		return 1
+	default:
+		return 0
+	}
 }
