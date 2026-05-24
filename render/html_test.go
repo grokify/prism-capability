@@ -45,7 +45,7 @@ func TestRenderHTML(t *testing.T) {
 		"Test Stack",
 		"Layer One",
 		"Capability A",
-		"#10b981", // Operational color
+		"#10b981",    // Operational color
 		"cs-filters", // Interactive filter controls (replaced cs-legend)
 	}
 
