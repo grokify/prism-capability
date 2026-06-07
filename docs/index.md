@@ -40,7 +40,7 @@ PRISM Capability defines **what capabilities exist** in an organization's techno
 - **Priority Framework**: Tier capabilities by business criticality (Existential, Critical, Strategic, Enhancement)
 - **Dynamic Priority**: Calculate P0-P3 priorities from importance weights and maturity gaps
 - **Validation**: Comprehensive validation with dependency cycle detection
-- **Rendering**: Generate D2 diagrams and interactive HTML visualizations
+- **Rendering**: Generate D2 diagrams, static HTML, and interactive Lit web components
 - **Overlays**: External modules can inject display data (badges, tooltips) into renderers
 
 ## Quick Start
@@ -71,11 +71,11 @@ capstack list my-stack.json --status operational
 
 ## Latest Release
 
-**v0.4.0** (2026-05-24)
+**v0.5.0** (2026-06-06)
 
-- Importance field and dynamic priority calculation (P0-P3)
-- Priority framework for organizing capabilities into tiers
-- Overlay provider for external data injection
-- Interactive filters and maturity badges in HTML renderer
+- Lit web component rendering with interactive filtering and view toggling
+- Priority-frameworks integration for standardized priority handling
+- JSON data output for custom Lit component integration
+- Operations-site example demonstrating Lit integration
 
-See [Release Notes](releases/v0.4.0.md) for details.
+See [Release Notes](releases/v0.5.0.md) for details.
