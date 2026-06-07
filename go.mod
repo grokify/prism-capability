@@ -3,7 +3,8 @@ module github.com/grokify/prism-capability
 go 1.24
 
 require (
-	github.com/grokify/prism-core v0.1.0
+	github.com/grokify/priority-frameworks v0.2.0
+	github.com/grokify/prism-core v0.2.0
 	github.com/spf13/cobra v1.10.2
 )
 
