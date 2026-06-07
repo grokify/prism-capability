@@ -28,6 +28,11 @@ var (
 	renderStandalone bool
 )
 
+var (
+	renderView          string
+	renderComponentPath string
+)
+
 var renderCmd = &cobra.Command{
 	Use:   "render <file>",
 	Short: "Render capability stack to a diagram",
@@ -35,11 +40,17 @@ var renderCmd = &cobra.Command{
 
 Supported formats:
   d2    D2 diagram language (https://d2lang.com)
-  html  Static HTML (embeddable or standalone)
+  html  Static HTML with Go templates (embeddable or standalone)
+  lit   HTML page with Lit web component (modern, interactive)
+  json  JSON data for Lit component (for custom integration)
 
 Styles (D2 only):
   default   Standard view with dependency arrows
   grid      Clean grid layout for executives (no arrows, aligned boxes)
+
+View modes (lit/json):
+  by-layer     Group capabilities by layer (default)
+  by-category  Group capabilities by category
 
 Examples:
   prism cap render stack.json -o stack.d2
@@ -47,22 +58,27 @@ Examples:
   prism cap render stack.json -f d2 | d2 - stack.svg
   prism cap render stack.json --style=grid | d2 - exec.svg
   prism cap render stack.json -f html -o stack.html
-  prism cap render stack.json -f html --standalone --dark -o full.html`,
+  prism cap render stack.json -f html --standalone --dark -o full.html
+  prism cap render stack.json -f lit -o stack-lit.html
+  prism cap render stack.json -f lit --dark --view=by-category -o stack-lit.html
+  prism cap render stack.json -f json -o stack-data.json`,
 	Args: cobra.ExactArgs(1),
 	RunE: runRender,
 }
 
 func init() {
 	renderCmd.Flags().StringVarP(&renderOutput, "output", "o", "", "Output file (default: stdout)")
-	renderCmd.Flags().StringVarP(&renderFormat, "format", "f", "d2", "Output format (d2, html)")
+	renderCmd.Flags().StringVarP(&renderFormat, "format", "f", "d2", "Output format (d2, html, lit, json)")
 	renderCmd.Flags().StringVarP(&renderTitle, "title", "t", "", "Diagram title (default: from metadata)")
 	renderCmd.Flags().StringVarP(&renderStyle, "style", "s", "default", "Render style: default or grid (D2 only)")
 	renderCmd.Flags().BoolVar(&renderNoDeps, "no-deps", false, "Hide dependency arrows (D2 only)")
 	renderCmd.Flags().BoolVar(&renderNoFoundation, "no-foundational", false, "Hide foundational capabilities")
 	renderCmd.Flags().BoolVar(&renderNoLegend, "no-legend", false, "Hide status legend")
 	renderCmd.Flags().StringVar(&renderColorBy, "color-by", "status", "Color scheme: status or category (D2 only)")
-	renderCmd.Flags().BoolVar(&renderDarkTheme, "dark", false, "Use dark theme (HTML only)")
+	renderCmd.Flags().BoolVar(&renderDarkTheme, "dark", false, "Use dark theme (HTML/lit only)")
 	renderCmd.Flags().BoolVar(&renderStandalone, "standalone", false, "Generate complete HTML document (HTML only)")
+	renderCmd.Flags().StringVar(&renderView, "view", "by-layer", "View mode: by-layer or by-category (lit/json)")
+	renderCmd.Flags().StringVar(&renderComponentPath, "component-path", "prism-ui.js", "Path to prism-ui.js (lit only)")
 }
 
 func runRender(cmd *cobra.Command, args []string) error {
@@ -108,6 +124,8 @@ func runRender(cmd *cobra.Command, args []string) error {
 				renderFormat = "d2"
 			case ".html", ".htm":
 				renderFormat = "html"
+			case ".json":
+				renderFormat = "json"
 			}
 		}
 
@@ -136,8 +154,32 @@ func runRender(cmd *cobra.Command, args []string) error {
 		if err := render.RenderHTML(out, doc, htmlOpts); err != nil {
 			return fmt.Errorf("render failed: %w", err)
 		}
+	case "lit":
+		theme := "light"
+		if renderDarkTheme {
+			theme = "dark"
+		}
+		litOpts := render.LitOptions{
+			Title:          renderTitle,
+			Theme:          theme,
+			View:           renderView,
+			ShowLegend:     !renderNoLegend,
+			ShowViewToggle: true,
+			ComponentPath:  renderComponentPath,
+		}
+		if err := render.RenderLitHTML(out, doc, litOpts); err != nil {
+			return fmt.Errorf("render failed: %w", err)
+		}
+	case "json":
+		litOpts := render.LitOptions{
+			Title: renderTitle,
+			View:  renderView,
+		}
+		if err := render.RenderJSON(out, doc, litOpts); err != nil {
+			return fmt.Errorf("render failed: %w", err)
+		}
 	default:
-		return fmt.Errorf("unsupported format: %s (supported: d2, html)", renderFormat)
+		return fmt.Errorf("unsupported format: %s (supported: d2, html, lit, json)", renderFormat)
 	}
 
 	if renderOutput != "" {
