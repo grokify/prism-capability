@@ -7,6 +7,30 @@
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
     {
+      "version": "v0.5.0",
+      "date": "2026-06-06",
+      "highlights": [
+        { "description": "Add Lit web component rendering for interactive HTML with filtering and view toggling" },
+        { "description": "Migrate to priority-frameworks package for standardized priority handling" }
+      ],
+      "added": [
+        { "description": "Lit web component rendering (`--format=lit`) with interactive filtering and sorting", "commit": "f3cdcb3" },
+        { "description": "JSON data output (`--format=json`) for custom Lit component integration", "commit": "f3cdcb3" },
+        { "description": "View modes: `by-layer` (default) and `by-category` grouping for Lit output", "commit": "f3cdcb3" },
+        { "description": "`--view` and `--component-path` CLI flags for Lit rendering options", "commit": "f3cdcb3" },
+        { "description": "Framework accessor functions: `SeverityFramework()`, `PriorityFrameworkP()`, `MoSCoWFramework()`, `IETFFramework()`, `GeneralFramework()`, `GetFramework()`", "commit": "09e9725" },
+        { "description": "Operations-site example demonstrating Lit component integration", "commit": "406e253" }
+      ],
+      "refactored": [
+        { "description": "Migrate priority handling to priority-frameworks package", "commit": "09e9725" },
+        { "description": "`ImportanceWeight()` and `DynamicPriorityWeight()` now use priority-frameworks internally", "commit": "09e9725" }
+      ],
+      "dependencies": [
+        { "description": "Add `github.com/grokify/priority-frameworks` v0.2.0", "commit": "5a660b0" },
+        { "description": "Update `github.com/grokify/prism-core` v0.1.0 → v0.2.0", "commit": "5a660b0" }
+      ]
+    },
+    {
       "version": "v0.4.0",
       "date": "2026-05-24",
       "highlights": [
