@@ -1,8 +1,12 @@
 package capstack
 
+import pf "github.com/grokify/priority-frameworks"
+
 // Importance constants define static weights for categories, layers, and capabilities.
 // These represent the inherent importance of "-ilities" (security, availability, etc.)
 // and are used in conjunction with current state to calculate dynamic priority.
+//
+// Deprecated: Use priority-frameworks package directly for new code.
 const (
 	ImportanceCritical = "critical"
 	ImportanceHigh     = "high"
@@ -23,18 +27,14 @@ func AllImportanceLevels() []string {
 // ImportanceWeight returns a numeric weight for the importance level.
 // Higher weights indicate higher importance.
 func ImportanceWeight(importance string) int {
-	switch importance {
-	case ImportanceCritical:
-		return 4
-	case ImportanceHigh:
-		return 3
-	case ImportanceMedium:
-		return 2
-	case ImportanceLow:
-		return 1
-	default:
+	f := pf.Severity()
+	idx := f.IndexOf(importance)
+	if idx < 0 {
 		return 2 // Default to medium
 	}
+	// Convert index to weight (0=highest -> 4, 4=lowest -> 0)
+	// But we want critical=4, high=3, medium=2, low=1
+	return len(f.Levels) - idx
 }
 
 // Priority constants define dynamic priority levels based on current state.
@@ -58,20 +58,13 @@ func AllPriorityLevels() []string {
 
 // DynamicPriorityWeight returns a numeric weight for the dynamic priority level (P0-P3).
 // Higher weights indicate higher priority.
-// Note: Use PriorityWeight for static priorities (critical/high/medium/low).
 func DynamicPriorityWeight(priority string) int {
-	switch priority {
-	case PriorityP0:
-		return 4
-	case PriorityP1:
-		return 3
-	case PriorityP2:
-		return 2
-	case PriorityP3:
-		return 1
-	default:
+	f := pf.Priority()
+	idx := f.IndexOf(priority)
+	if idx < 0 {
 		return 2 // Default to P2
 	}
+	return len(f.Levels) - idx
 }
 
 // CalculatePriority determines dynamic priority based on importance and maturity gap.
@@ -100,4 +93,34 @@ func CalculatePriority(importance string, currentLevel, targetLevel int) string 
 	default:
 		return PriorityP3
 	}
+}
+
+// SeverityFramework returns the Severity priority framework.
+func SeverityFramework() *pf.Framework {
+	return pf.Severity()
+}
+
+// PriorityFrameworkP returns the P# priority framework.
+func PriorityFrameworkP() *pf.Framework {
+	return pf.Priority()
+}
+
+// MoSCoWFramework returns the MoSCoW priority framework.
+func MoSCoWFramework() *pf.Framework {
+	return pf.MoSCoW()
+}
+
+// IETFFramework returns the IETF RFC 2119 requirement framework.
+func IETFFramework() *pf.Framework {
+	return pf.IETF()
+}
+
+// GeneralFramework returns the general requirement framework.
+func GeneralFramework() *pf.Framework {
+	return pf.General()
+}
+
+// GetFramework returns a priority framework by ID.
+func GetFramework(id string) *pf.Framework {
+	return pf.Get(id)
 }

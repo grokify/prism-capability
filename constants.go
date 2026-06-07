@@ -24,12 +24,13 @@ func AllCapabilityStatuses() []string {
 	}
 }
 
-// Priority constants imported from prism-core.
+// Priority constants for severity-based prioritization.
+// Now backed by priority-frameworks package.
 const (
-	PriorityCritical = core.PriorityCritical
-	PriorityHigh     = core.PriorityHigh
-	PriorityMedium   = core.PriorityMedium
-	PriorityLow      = core.PriorityLow
+	PriorityCritical = "critical"
+	PriorityHigh     = "high"
+	PriorityMedium   = "medium"
+	PriorityLow      = "low"
 )
 
 // AllPriorities returns all valid priority values.
@@ -44,12 +45,19 @@ func AllPriorities() []string {
 
 // ValidPriority checks if a priority value is valid.
 func ValidPriority(priority string) bool {
-	return core.ValidPriority(priority)
+	f := SeverityFramework()
+	return f.IndexOf(priority) >= 0 || priority == ""
 }
 
 // PriorityWeight returns a numeric weight for sorting priorities.
+// Higher weight = higher priority.
 func PriorityWeight(priority string) int {
-	return core.PriorityWeight(priority)
+	f := SeverityFramework()
+	idx := f.IndexOf(priority)
+	if idx < 0 {
+		return 0
+	}
+	return len(f.Levels) - idx
 }
 
 // Domain constants imported from prism-core.
