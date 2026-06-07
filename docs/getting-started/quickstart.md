@@ -84,12 +84,21 @@ capstack list my-stack.json --layer application
 ## Render Visualizations
 
 ```bash
-# HTML (interactive)
+# Lit web component (interactive, recommended)
+capstack render my-stack.json --format lit --output stack.html
+
+# Lit with dark theme and category view
+capstack render my-stack.json --format lit --dark --view by-category --output stack.html
+
+# Static HTML
 capstack render my-stack.json --format html --output stack.html
 
 # D2 diagram
 capstack render my-stack.json --format d2 --output stack.d2
 d2 stack.d2 stack.svg
+
+# JSON data for custom integration
+capstack render my-stack.json --format json --output stack-data.json
 ```
 
 ## Use as Library

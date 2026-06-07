@@ -88,6 +88,27 @@ The HTML renderer adds:
 - Badge display on capabilities
 - Data attributes for JavaScript filtering
 
+### Lit Output
+
+```go
+litOpts := render.LitOptions{
+    Theme:      "light",
+    View:       "by-layer",
+    ShowLegend: true,
+}
+
+// Render interactive Lit HTML
+var buf bytes.Buffer
+render.RenderLitHTML(&buf, cs, litOpts)
+```
+
+The Lit renderer provides:
+
+- Interactive filtering and sorting
+- View toggle (by-layer / by-category)
+- Dark/light theme support
+- Modern web component architecture
+
 ## Integration with prism-maturity
 
 The primary use case is integrating maturity state from prism-maturity:
