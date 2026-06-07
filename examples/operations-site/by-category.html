@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRE Operations - By Category</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="logo">SRE Ops</a>
+    <div class="nav-links">
+      <a href="index.html">Overview</a>
+      <a href="by-layer.html">By Layer</a>
+      <a href="by-category.html" class="active">By Category</a>
+      <a href="maturity.html">Maturity</a>
+      <a href="metrics.html">Metrics</a>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">Capabilities by Category</h1>
+    <p class="page-subtitle">Organized by functional domain</p>
+
+    <div class="stats-grid" id="category-stats"></div>
+
+    <maturity-grid id="grid" view="by-category" theme="light" show-legend src="data/capabilities.json"></maturity-grid>
+  </div>
+
+  <script type="module" src="assets/prism-ui.js"></script>
+  <script>
+    async function init() {
+      const res = await fetch('data/capabilities.json');
+      const caps = await res.json();
+
+      // Calculate per-category stats
+      const categoryStats = caps.categories.map(cat => {
+        const catCaps = caps.capabilities.filter(c => c.categoryId === cat.id);
+        const operational = catCaps.filter(c => c.status === 'operational').length;
+        const avgLevel = catCaps.reduce((sum, c) => {
+          const m = caps.maturity[c.id];
+          return sum + (m ? m.level : 0);
+        }, 0) / catCaps.length;
+        return {
+          name: cat.name,
+          count: catCaps.length,
+          operational: operational,
+          avgMaturity: avgLevel.toFixed(1)
+        };
+      });
+
+      document.getElementById('category-stats').innerHTML = categoryStats.map(s => `
+        <div class="stat-card">
+          <div class="stat-label">${s.name}</div>
+          <div class="stat-value">${s.count}</div>
+          <div class="stat-subtext">${s.operational} operational, <span class="maturity-${Math.round(s.avgMaturity)}">M${s.avgMaturity}</span></div>
+        </div>
+      `).join('');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const grid = document.getElementById('grid');
+      grid.setAttribute('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    init();
+  </script>
+</body>
+</html>

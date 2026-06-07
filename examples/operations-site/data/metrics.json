@@ -1,0 +1,415 @@
+{
+  "title": "SRE Metrics Dashboard",
+  "slis": [
+    {
+      "id": "sli-slo-coverage",
+      "name": "SLO Coverage",
+      "description": "Percentage of services with defined SLOs",
+      "capabilityId": "slo-framework",
+      "unit": "%",
+      "currentValue": 85,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-slo-attainment",
+      "name": "SLO Attainment",
+      "description": "Percentage of SLOs meeting their targets",
+      "capabilityId": "slo-framework",
+      "unit": "%",
+      "currentValue": 97.5,
+      "targetValue": 99,
+      "thresholds": {"M1": 0, "M2": 80, "M3": 90, "M4": 95, "M5": 99}
+    },
+    {
+      "id": "sli-error-budget-remaining",
+      "name": "Error Budget Remaining",
+      "description": "Average error budget remaining across services",
+      "capabilityId": "error-budget",
+      "unit": "%",
+      "currentValue": 62,
+      "targetValue": 50,
+      "thresholds": {"M1": 0, "M2": 10, "M3": 25, "M4": 40, "M5": 60}
+    },
+    {
+      "id": "sli-toil-percentage",
+      "name": "Toil Percentage",
+      "description": "Percentage of time spent on toil vs engineering",
+      "capabilityId": "toil-tracking",
+      "unit": "%",
+      "currentValue": 42,
+      "targetValue": 25,
+      "thresholds": {"M1": 100, "M2": 75, "M3": 50, "M4": 35, "M5": 20},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-prr-coverage",
+      "name": "PRR Coverage",
+      "description": "Services that completed Production Readiness Review",
+      "capabilityId": "reliability-review",
+      "unit": "%",
+      "currentValue": 78,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-service-catalog-coverage",
+      "name": "Service Catalog Coverage",
+      "description": "Services registered in service catalog",
+      "capabilityId": "service-catalog",
+      "unit": "%",
+      "currentValue": 72,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-capacity-headroom",
+      "name": "Capacity Headroom",
+      "description": "Available capacity above peak usage",
+      "capabilityId": "capacity-planning",
+      "unit": "%",
+      "currentValue": 35,
+      "targetValue": 30,
+      "thresholds": {"M1": 0, "M2": 10, "M3": 20, "M4": 30, "M5": 50}
+    },
+    {
+      "id": "sli-blast-radius",
+      "name": "Blast Radius Score",
+      "description": "Maximum impact of single component failure",
+      "capabilityId": "failure-domains",
+      "unit": "%",
+      "currentValue": 15,
+      "targetValue": 10,
+      "thresholds": {"M1": 100, "M2": 50, "M3": 25, "M4": 15, "M5": 5},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-chaos-experiment-coverage",
+      "name": "Chaos Coverage",
+      "description": "Services with chaos experiments defined",
+      "capabilityId": "chaos-engineering",
+      "unit": "%",
+      "currentValue": 5,
+      "targetValue": 75,
+      "thresholds": {"M1": 0, "M2": 10, "M3": 25, "M4": 50, "M5": 80}
+    },
+    {
+      "id": "sli-deployment-frequency",
+      "name": "Deployment Frequency",
+      "description": "Deployments per day",
+      "capabilityId": "cicd-pipeline",
+      "unit": "/day",
+      "currentValue": 12,
+      "targetValue": 20,
+      "thresholds": {"M1": 0, "M2": 1, "M3": 5, "M4": 10, "M5": 25}
+    },
+    {
+      "id": "sli-lead-time",
+      "name": "Lead Time for Changes",
+      "description": "Time from commit to production",
+      "capabilityId": "cicd-pipeline",
+      "unit": "hours",
+      "currentValue": 2.5,
+      "targetValue": 1,
+      "thresholds": {"M1": 720, "M2": 168, "M3": 24, "M4": 4, "M5": 1},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-test-coverage",
+      "name": "Test Coverage",
+      "description": "Code covered by automated tests",
+      "capabilityId": "test-automation",
+      "unit": "%",
+      "currentValue": 82,
+      "targetValue": 85,
+      "thresholds": {"M1": 0, "M2": 40, "M3": 60, "M4": 75, "M5": 90}
+    },
+    {
+      "id": "sli-test-reliability",
+      "name": "Test Reliability",
+      "description": "Tests that pass consistently (no flakes)",
+      "capabilityId": "test-automation",
+      "unit": "%",
+      "currentValue": 96,
+      "targetValue": 99,
+      "thresholds": {"M1": 0, "M2": 70, "M3": 85, "M4": 95, "M5": 99}
+    },
+    {
+      "id": "sli-load-test-coverage",
+      "name": "Load Test Coverage",
+      "description": "Critical paths covered by load tests",
+      "capabilityId": "load-testing",
+      "unit": "%",
+      "currentValue": 60,
+      "targetValue": 80,
+      "thresholds": {"M1": 0, "M2": 20, "M3": 40, "M4": 60, "M5": 90}
+    },
+    {
+      "id": "sli-iac-coverage",
+      "name": "IaC Coverage",
+      "description": "Infrastructure managed by code",
+      "capabilityId": "infrastructure-as-code",
+      "unit": "%",
+      "currentValue": 92,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 80, "M5": 95}
+    },
+    {
+      "id": "sli-config-drift",
+      "name": "Config Drift",
+      "description": "Servers with configuration drift",
+      "capabilityId": "configuration-management",
+      "unit": "%",
+      "currentValue": 3,
+      "targetValue": 0,
+      "thresholds": {"M1": 100, "M2": 25, "M3": 10, "M4": 5, "M5": 1},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-canary-coverage",
+      "name": "Canary Coverage",
+      "description": "Deployments using canary strategy",
+      "capabilityId": "canary-deployments",
+      "unit": "%",
+      "currentValue": 85,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-feature-flag-adoption",
+      "name": "Feature Flag Adoption",
+      "description": "Teams using feature flags for releases",
+      "capabilityId": "feature-flags",
+      "unit": "%",
+      "currentValue": 68,
+      "targetValue": 90,
+      "thresholds": {"M1": 0, "M2": 20, "M3": 40, "M4": 60, "M5": 85}
+    },
+    {
+      "id": "sli-traffic-shift-success",
+      "name": "Traffic Shift Success",
+      "description": "Successful traffic shifts without rollback",
+      "capabilityId": "traffic-management",
+      "unit": "%",
+      "currentValue": 98,
+      "targetValue": 99,
+      "thresholds": {"M1": 0, "M2": 80, "M3": 90, "M4": 95, "M5": 99}
+    },
+    {
+      "id": "sli-observability-coverage",
+      "name": "Observability Coverage",
+      "description": "Services with full observability stack",
+      "capabilityId": "observability-platform",
+      "unit": "%",
+      "currentValue": 88,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-metric-coverage",
+      "name": "Metric Coverage",
+      "description": "Services with RED/USE metrics",
+      "capabilityId": "metrics",
+      "unit": "%",
+      "currentValue": 95,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 80, "M5": 95}
+    },
+    {
+      "id": "sli-log-coverage",
+      "name": "Log Coverage",
+      "description": "Services with structured logging",
+      "capabilityId": "logging",
+      "unit": "%",
+      "currentValue": 90,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 25, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-log-retention",
+      "name": "Log Retention",
+      "description": "Days of log retention available",
+      "capabilityId": "logging",
+      "unit": "days",
+      "currentValue": 90,
+      "targetValue": 90,
+      "thresholds": {"M1": 1, "M2": 7, "M3": 30, "M4": 60, "M5": 90}
+    },
+    {
+      "id": "sli-trace-coverage",
+      "name": "Trace Coverage",
+      "description": "Requests with distributed traces",
+      "capabilityId": "distributed-tracing",
+      "unit": "%",
+      "currentValue": 72,
+      "targetValue": 95,
+      "thresholds": {"M1": 0, "M2": 20, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-alert-snr",
+      "name": "Alert Signal-to-Noise Ratio",
+      "description": "Actionable alerts vs total alerts",
+      "capabilityId": "alerting",
+      "unit": "%",
+      "currentValue": 78,
+      "targetValue": 90,
+      "thresholds": {"M1": 0, "M2": 30, "M3": 50, "M4": 70, "M5": 90}
+    },
+    {
+      "id": "sli-mtta",
+      "name": "MTTA",
+      "description": "Mean Time to Acknowledge",
+      "capabilityId": "alerting",
+      "unit": "min",
+      "currentValue": 4.2,
+      "targetValue": 5,
+      "thresholds": {"M1": 60, "M2": 30, "M3": 15, "M4": 5, "M5": 2},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-oncall-load",
+      "name": "On-Call Load",
+      "description": "Pages per on-call shift",
+      "capabilityId": "on-call",
+      "unit": "/shift",
+      "currentValue": 3.5,
+      "targetValue": 2,
+      "thresholds": {"M1": 50, "M2": 20, "M3": 10, "M4": 5, "M5": 2},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-escalation-rate",
+      "name": "Escalation Rate",
+      "description": "Incidents requiring escalation",
+      "capabilityId": "on-call",
+      "unit": "%",
+      "currentValue": 12,
+      "targetValue": 10,
+      "thresholds": {"M1": 100, "M2": 50, "M3": 30, "M4": 15, "M5": 5},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-mttd",
+      "name": "MTTD",
+      "description": "Mean Time to Detect",
+      "capabilityId": "incident-management",
+      "unit": "min",
+      "currentValue": 3.8,
+      "targetValue": 5,
+      "thresholds": {"M1": 60, "M2": 30, "M3": 15, "M4": 5, "M5": 2},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-mttr",
+      "name": "MTTR",
+      "description": "Mean Time to Resolve",
+      "capabilityId": "incident-management",
+      "unit": "min",
+      "currentValue": 28,
+      "targetValue": 30,
+      "thresholds": {"M1": 480, "M2": 240, "M3": 120, "M4": 60, "M5": 15},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-runbook-coverage",
+      "name": "Runbook Coverage",
+      "description": "Alerts with documented runbooks",
+      "capabilityId": "runbooks",
+      "unit": "%",
+      "currentValue": 65,
+      "targetValue": 90,
+      "thresholds": {"M1": 0, "M2": 20, "M3": 40, "M4": 70, "M5": 95}
+    },
+    {
+      "id": "sli-runbook-execution-time",
+      "name": "Runbook Execution Time",
+      "description": "Average time to execute runbook",
+      "capabilityId": "runbooks",
+      "unit": "min",
+      "currentValue": 12,
+      "targetValue": 10,
+      "thresholds": {"M1": 120, "M2": 60, "M3": 30, "M4": 15, "M5": 5},
+      "lowerIsBetter": true
+    },
+    {
+      "id": "sli-auto-remediation-rate",
+      "name": "Auto-Remediation Rate",
+      "description": "Incidents auto-remediated",
+      "capabilityId": "auto-remediation",
+      "unit": "%",
+      "currentValue": 8,
+      "targetValue": 40,
+      "thresholds": {"M1": 0, "M2": 5, "M3": 15, "M4": 30, "M5": 50}
+    },
+    {
+      "id": "sli-rto",
+      "name": "RTO Achievement",
+      "description": "Recovery Time Objective met in drills",
+      "capabilityId": "disaster-recovery",
+      "unit": "%",
+      "currentValue": 85,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 50, "M3": 75, "M4": 90, "M5": 100}
+    },
+    {
+      "id": "sli-rpo",
+      "name": "RPO Achievement",
+      "description": "Recovery Point Objective met",
+      "capabilityId": "disaster-recovery",
+      "unit": "%",
+      "currentValue": 100,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 50, "M3": 75, "M4": 95, "M5": 100}
+    },
+    {
+      "id": "sli-backup-success-rate",
+      "name": "Backup Success Rate",
+      "description": "Successful backups in last 30 days",
+      "capabilityId": "backup-restore",
+      "unit": "%",
+      "currentValue": 99.8,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 80, "M3": 95, "M4": 99, "M5": 99.9}
+    },
+    {
+      "id": "sli-restore-test-frequency",
+      "name": "Restore Test Frequency",
+      "description": "Restore tests per quarter",
+      "capabilityId": "backup-restore",
+      "unit": "/quarter",
+      "currentValue": 4,
+      "targetValue": 4,
+      "thresholds": {"M1": 0, "M2": 1, "M3": 2, "M4": 4, "M5": 12}
+    },
+    {
+      "id": "sli-postmortem-completion",
+      "name": "Postmortem Completion",
+      "description": "SEV1/2 incidents with completed postmortems",
+      "capabilityId": "postmortems",
+      "unit": "%",
+      "currentValue": 95,
+      "targetValue": 100,
+      "thresholds": {"M1": 0, "M2": 50, "M3": 75, "M4": 90, "M5": 100}
+    },
+    {
+      "id": "sli-action-item-closure",
+      "name": "Action Item Closure",
+      "description": "Postmortem action items closed within SLA",
+      "capabilityId": "postmortems",
+      "unit": "%",
+      "currentValue": 82,
+      "targetValue": 90,
+      "thresholds": {"M1": 0, "M2": 30, "M3": 50, "M4": 75, "M5": 95}
+    },
+    {
+      "id": "sli-reliability-investment",
+      "name": "Reliability Investment",
+      "description": "Engineering time on reliability improvements",
+      "capabilityId": "reliability-improvement",
+      "unit": "%",
+      "currentValue": 18,
+      "targetValue": 20,
+      "thresholds": {"M1": 0, "M2": 5, "M3": 10, "M4": 15, "M5": 25}
+    }
+  ]
+}

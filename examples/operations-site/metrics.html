@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRE Operations - Metrics</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    .metrics-filters {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .metrics-filters select {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    body.dark .metrics-filters select {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+    .sli-card {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    body.dark .sli-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .sli-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .sli-name {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+    .sli-capability {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+    .sli-status {
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .sli-status.good {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .sli-status.warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .sli-status.danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    body.dark .sli-status.good {
+      background: #065f46;
+      color: #d1fae5;
+    }
+    body.dark .sli-status.warning {
+      background: #92400e;
+      color: #fef3c7;
+    }
+    body.dark .sli-status.danger {
+      background: #991b1b;
+      color: #fee2e2;
+    }
+    .sli-description {
+      font-size: 0.875rem;
+      opacity: 0.7;
+      margin-bottom: 16px;
+    }
+    .sli-values {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 16px;
+    }
+    .sli-value-item {
+      text-align: center;
+    }
+    .sli-value-item .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .sli-value-item .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+    .sli-bar {
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 6px;
+      position: relative;
+      overflow: visible;
+    }
+    body.dark .sli-bar {
+      background: #334155;
+    }
+    .sli-bar .fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+    .sli-bar .fill.good { background: #10b981; }
+    .sli-bar .fill.warning { background: #f59e0b; }
+    .sli-bar .fill.danger { background: #ef4444; }
+    .sli-bar .target-marker {
+      position: absolute;
+      top: -4px;
+      width: 2px;
+      height: 20px;
+      background: #1f2937;
+      border-radius: 1px;
+    }
+    body.dark .sli-bar .target-marker {
+      background: #f1f5f9;
+    }
+    .sli-thresholds {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.5;
+    }
+    .sli-threshold-item {
+      text-align: center;
+    }
+    .search-box {
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      font-size: 0.875rem;
+      width: 250px;
+    }
+    body.dark .search-box {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="logo">SRE Ops</a>
+    <div class="nav-links">
+      <a href="index.html">Overview</a>
+      <a href="by-layer.html">By Layer</a>
+      <a href="by-category.html">By Category</a>
+      <a href="maturity.html">Maturity</a>
+      <a href="metrics.html" class="active">Metrics</a>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">SLI Metrics Dashboard</h1>
+    <p class="page-subtitle">Service Level Indicators across all capabilities</p>
+
+    <div class="stats-grid" id="stats"></div>
+
+    <div class="metrics-filters">
+      <input type="text" class="search-box" id="search" placeholder="Search metrics..." oninput="filterMetrics()">
+      <select id="capability-filter" onchange="filterMetrics()">
+        <option value="">All Capabilities</option>
+      </select>
+      <select id="status-filter" onchange="filterMetrics()">
+        <option value="">All Status</option>
+        <option value="good">Meeting Target</option>
+        <option value="warning">Near Target</option>
+        <option value="danger">Below Target</option>
+      </select>
+    </div>
+
+    <div id="sli-list"></div>
+  </div>
+
+  <script>
+    let allMetrics = null;
+    let allCaps = null;
+
+    async function init() {
+      const [metricsRes, capsRes] = await Promise.all([
+        fetch('data/metrics.json'),
+        fetch('data/capabilities.json')
+      ]);
+      allMetrics = await metricsRes.json();
+      allCaps = await capsRes.json();
+
+      // Populate capability filter
+      const filter = document.getElementById('capability-filter');
+      const capNames = {};
+      allCaps.capabilities.forEach(c => {
+        capNames[c.id] = c.name;
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.name;
+        filter.appendChild(opt);
+      });
+
+      // Calculate stats
+      const total = allMetrics.slis.length;
+      const good = allMetrics.slis.filter(s => getStatus(s) === 'good').length;
+      const warning = allMetrics.slis.filter(s => getStatus(s) === 'warning').length;
+      const danger = allMetrics.slis.filter(s => getStatus(s) === 'danger').length;
+
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label">Total SLIs</div>
+          <div class="stat-value">${total}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Meeting Target</div>
+          <div class="stat-value status-operational">${good}</div>
+          <div class="stat-subtext">${Math.round(good/total*100)}% of SLIs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Near Target</div>
+          <div class="stat-value status-in-progress">${warning}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Below Target</div>
+          <div class="stat-value status-deprecated">${danger}</div>
+        </div>
+      `;
+
+      filterMetrics();
+    }
+
+    function getStatus(sli) {
+      const current = sli.currentValue;
+      const target = sli.targetValue;
+      const lowerIsBetter = sli.lowerIsBetter;
+
+      if (lowerIsBetter) {
+        if (current <= target) return 'good';
+        if (current <= target * 1.2) return 'warning';
+        return 'danger';
+      } else {
+        if (current >= target) return 'good';
+        if (current >= target * 0.8) return 'warning';
+        return 'danger';
+      }
+    }
+
+    function getPercentage(sli) {
+      const levels = Object.values(sli.thresholds);
+      const min = Math.min(...levels);
+      const max = Math.max(...levels);
+      const range = max - min;
+
+      if (sli.lowerIsBetter) {
+        return Math.max(0, Math.min(100, 100 - ((sli.currentValue - min) / range * 100)));
+      }
+      return Math.max(0, Math.min(100, (sli.currentValue - min) / range * 100));
+    }
+
+    function getTargetPercentage(sli) {
+      const levels = Object.values(sli.thresholds);
+      const min = Math.min(...levels);
+      const max = Math.max(...levels);
+      const range = max - min;
+
+      if (sli.lowerIsBetter) {
+        return Math.max(0, Math.min(100, 100 - ((sli.targetValue - min) / range * 100)));
+      }
+      return Math.max(0, Math.min(100, (sli.targetValue - min) / range * 100));
+    }
+
+    function filterMetrics() {
+      const search = document.getElementById('search').value.toLowerCase();
+      const capFilter = document.getElementById('capability-filter').value;
+      const statusFilter = document.getElementById('status-filter').value;
+
+      const capNames = {};
+      allCaps.capabilities.forEach(c => capNames[c.id] = c.name);
+
+      let slis = allMetrics.slis;
+
+      if (search) {
+        slis = slis.filter(s =>
+          s.name.toLowerCase().includes(search) ||
+          s.description.toLowerCase().includes(search) ||
+          (capNames[s.capabilityId] || '').toLowerCase().includes(search)
+        );
+      }
+
+      if (capFilter) {
+        slis = slis.filter(s => s.capabilityId === capFilter);
+      }
+
+      if (statusFilter) {
+        slis = slis.filter(s => getStatus(s) === statusFilter);
+      }
+
+      document.getElementById('sli-list').innerHTML = slis.map(sli => {
+        const status = getStatus(sli);
+        const pct = getPercentage(sli);
+        const targetPct = getTargetPercentage(sli);
+        const capName = capNames[sli.capabilityId] || sli.capabilityId;
+
+        return `
+          <div class="sli-card">
+            <div class="sli-header">
+              <div>
+                <div class="sli-name">${sli.name}</div>
+                <div class="sli-capability">${capName}</div>
+              </div>
+              <div class="sli-status ${status}">${status === 'good' ? 'On Target' : status === 'warning' ? 'Near Target' : 'Below Target'}</div>
+            </div>
+            <div class="sli-description">${sli.description}</div>
+            <div class="sli-values">
+              <div class="sli-value-item">
+                <div class="value">${sli.currentValue}${sli.unit}</div>
+                <div class="label">Current</div>
+              </div>
+              <div class="sli-value-item">
+                <div class="value">${sli.targetValue}${sli.unit}</div>
+                <div class="label">Target</div>
+              </div>
+            </div>
+            <div class="sli-bar">
+              <div class="fill ${status}" style="width: ${pct}%"></div>
+              <div class="target-marker" style="left: ${targetPct}%"></div>
+            </div>
+            <div class="sli-thresholds">
+              <div class="sli-threshold-item">M1: ${sli.thresholds.M1}${sli.unit}</div>
+              <div class="sli-threshold-item">M2: ${sli.thresholds.M2}${sli.unit}</div>
+              <div class="sli-threshold-item">M3: ${sli.thresholds.M3}${sli.unit}</div>
+              <div class="sli-threshold-item">M4: ${sli.thresholds.M4}${sli.unit}</div>
+              <div class="sli-threshold-item">M5: ${sli.thresholds.M5}${sli.unit}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRE Operations - Overview</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="logo">SRE Ops</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Overview</a>
+      <a href="by-layer.html">By Layer</a>
+      <a href="by-category.html">By Category</a>
+      <a href="maturity.html">Maturity</a>
+      <a href="metrics.html">Metrics</a>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  </nav>
+
+  <div class="page-container">
+    <h1 class="page-title">B2B SaaS Operations & SRE</h1>
+    <p class="page-subtitle">Capability maturity and operational metrics dashboard</p>
+
+    <div class="stats-grid" id="stats"></div>
+
+    <div class="section">
+      <h2 class="section-title">Capability Overview</h2>
+      <maturity-grid id="grid" view="by-layer" theme="light" show-legend src="data/capabilities.json"></maturity-grid>
+    </div>
+  </div>
+
+  <script type="module" src="assets/prism-ui.js"></script>
+  <script>
+    // Load data and render stats
+    async function init() {
+      const [capsRes, metricsRes] = await Promise.all([
+        fetch('data/capabilities.json'),
+        fetch('data/metrics.json')
+      ]);
+      const caps = await capsRes.json();
+      const metrics = await metricsRes.json();
+
+      // Calculate stats
+      const totalCaps = caps.capabilities.length;
+      const operational = caps.capabilities.filter(c => c.status === 'operational').length;
+      const implemented = caps.capabilities.filter(c => c.status === 'implemented').length;
+      const inProgress = caps.capabilities.filter(c => c.status === 'in-progress').length;
+      const planned = caps.capabilities.filter(c => c.status === 'planned').length;
+
+      const maturityValues = Object.values(caps.maturity).map(m => m.level);
+      const avgMaturity = (maturityValues.reduce((a, b) => a + b, 0) / maturityValues.length).toFixed(1);
+
+      const totalSLIs = metrics.slis.length;
+      const meetsTarget = metrics.slis.filter(s => {
+        if (s.lowerIsBetter) return s.currentValue <= s.targetValue;
+        return s.currentValue >= s.targetValue;
+      }).length;
+
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-label">Total Capabilities</div>
+          <div class="stat-value">${totalCaps}</div>
+          <div class="stat-subtext">${operational} operational, ${implemented} implemented</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Average Maturity</div>
+          <div class="stat-value maturity-${Math.round(avgMaturity)}">M${avgMaturity}</div>
+          <div class="stat-subtext">across ${maturityValues.length} capabilities</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">SLI Health</div>
+          <div class="stat-value ${meetsTarget/totalSLIs >= 0.8 ? 'status-operational' : 'status-in-progress'}">${Math.round(meetsTarget/totalSLIs*100)}%</div>
+          <div class="stat-subtext">${meetsTarget}/${totalSLIs} meeting targets</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">In Progress</div>
+          <div class="stat-value status-in-progress">${inProgress}</div>
+          <div class="stat-subtext">${planned} planned</div>
+        </div>
+      `;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const grid = document.getElementById('grid');
+      grid.setAttribute('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    init();
+  </script>
+</body>
+</html>
