@@ -176,6 +176,15 @@ capstack render stack.json -f html --standalone -o stack.html
 
 # Generate dark theme HTML
 capstack render stack.json -f html --standalone --dark -o dark.html
+
+# Generate interactive Lit web component HTML
+capstack render stack.json -f lit -o stack-lit.html
+
+# Lit with dark theme and category view
+capstack render stack.json -f lit --dark --view=by-category -o stack-lit.html
+
+# JSON data for custom Lit integration
+capstack render stack.json -f json -o stack-data.json
 ```
 
 **Output Formats:**
@@ -184,6 +193,8 @@ capstack render stack.json -f html --standalone --dark -o dark.html
 |--------|-------------|
 | `d2` | D2 diagram language (default) |
 | `html` | Static HTML - embeddable fragment or standalone document |
+| `lit` | Interactive HTML with Lit web component |
+| `json` | JSON data for custom Lit component integration |
 
 **Render Styles (D2 only):**
 
@@ -198,14 +209,16 @@ capstack render stack.json -f html --standalone --dark -o dark.html
 |------|-------------|
 | `-o, --output` | Output file (default: stdout) |
 | `-s, --style` | Render style: `default` or `grid` (D2 only) |
-| `-f, --format` | Output format: `d2` or `html` |
+| `-f, --format` | Output format: `d2`, `html`, `lit`, or `json` |
 | `-t, --title` | Override diagram title |
 | `--no-deps` | Hide dependency arrows (D2 only) |
 | `--no-foundational` | Hide foundational capabilities |
 | `--no-legend` | Hide status legend |
 | `--color-by` | Color scheme: `status` (default) or `category` (D2 only) |
 | `--standalone` | Generate complete HTML document (HTML only) |
-| `--dark` | Use dark theme (HTML only) |
+| `--dark` | Use dark theme (HTML/lit only) |
+| `--view` | View mode: `by-layer` or `by-category` (lit/json only) |
+| `--component-path` | Path to prism-ui.js component (lit only) |
 
 **Status Colors:**
 

@@ -12,12 +12,14 @@ capstack render <file> [flags]
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--format`, `-f` | Output format: `html` or `d2` | `html` |
+| `--format`, `-f` | Output format: `d2`, `html`, `lit`, or `json` | `d2` |
 | `--output`, `-o` | Output file path | stdout |
 | `--standalone` | Include full HTML document | `true` |
-| `--dark` | Use dark theme | `false` |
+| `--dark` | Use dark theme (HTML/lit) | `false` |
 | `--legend` | Show status legend/filters | `true` |
 | `--style` | D2 style: `default` or `grid` | `default` |
+| `--view` | View mode: `by-layer` or `by-category` (lit/json) | `by-layer` |
+| `--component-path` | Path to prism-ui.js component (lit) | `prism-ui.js` |
 
 ## Examples
 
@@ -39,6 +41,15 @@ capstack render my-stack.json --format d2 --style grid -o stack-grid.d2
 
 # Convert D2 to SVG (requires d2 installed)
 d2 stack.d2 stack.svg
+
+# Lit web component (interactive)
+capstack render my-stack.json --format lit -o stack.html
+
+# Lit with category view and dark theme
+capstack render my-stack.json --format lit --view by-category --dark -o stack.html
+
+# JSON data for custom integration
+capstack render my-stack.json --format json -o stack-data.json
 ```
 
 ## HTML Output
@@ -60,3 +71,25 @@ The D2 renderer generates diagrams showing:
 - Dependency relationships (default style)
 - Grid layout (grid style)
 - Optional badge overlays
+
+## Lit Output
+
+The Lit renderer generates interactive HTML with:
+
+- Modern Lit web component (`<maturity-grid>`)
+- View toggle between layer and category grouping
+- Interactive filtering by status
+- Sorting options
+- Dark/light theme support
+- Tooltips with capability details
+
+## JSON Output
+
+The JSON renderer outputs structured data for custom Lit component integration:
+
+- `layers`: Layer definitions with IDs and names
+- `categories`: Category definitions
+- `capabilities`: Capability data with layer/category associations
+- `maturity`: Optional maturity level data
+
+Use JSON output when integrating with custom web applications or when you need programmatic access to the rendered data structure.
