@@ -71,11 +71,10 @@ capstack list my-stack.json --status operational
 
 ## Latest Release
 
-**v0.5.0** (2026-06-06)
+**v0.6.0** (2026-06-28)
 
-- Lit web component rendering with interactive filtering and view toggling
-- Priority-frameworks integration for standardized priority handling
-- JSON data output for custom Lit component integration
-- Operations-site example demonstrating Lit integration
+- Operations & DevOps frameworks (DORA, SRE)
+- Developer productivity frameworks (SPACE, AI-DORA, AI-SPACE)
+- Developer experience metrics with canonical SLI definitions
 
-See [Release Notes](releases/v0.5.0.md) for details.
+See [Release Notes](releases/v0.6.0.md) for details.
