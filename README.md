@@ -632,6 +632,8 @@ Map capabilities to compliance frameworks:
 
 Supported frameworks:
 
+**Compliance & Security:**
+
 - `nist-csf-2.0` - NIST Cybersecurity Framework 2.0
 - `nist-800-53` - NIST SP 800-53
 - `iso-27001` - ISO/IEC 27001
@@ -642,6 +644,17 @@ Supported frameworks:
 - `owasp` - OWASP Top 10 / ASVS
 - `slsa` - SLSA (Supply-chain Levels for Software Artifacts)
 - `ssdf` - NIST SSDF (Secure Software Development Framework)
+
+**Operations & DevOps:**
+
+- `dora` - DevOps Research and Assessment (deployment frequency, lead time, MTTR, change failure rate)
+- `sre` - Site Reliability Engineering (SLOs, error budgets, toil reduction)
+
+**Developer Productivity:**
+
+- `space` - SPACE Framework (Satisfaction, Performance, Activity, Communication, Efficiency)
+- `ai-dora` - AI-Modified DORA metrics for AI-assisted development
+- `ai-space` - AI-Modified SPACE framework for AI-enhanced productivity
 
 ## Validation
 
