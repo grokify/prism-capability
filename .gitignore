@@ -3,3 +3,6 @@ IDEATION_CHAT*.md
 
 # Built binaries
 /capstack
+
+# MkDocs build output
+/site/
