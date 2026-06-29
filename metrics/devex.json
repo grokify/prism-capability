@@ -1,0 +1,487 @@
+{
+  "$schema": "../schema/metrics.schema.json",
+  "title": "Developer Experience Metrics",
+  "description": "Canonical SLI definitions for DORA, SPACE, AI-DORA, and AI-SPACE frameworks",
+  "version": "1.0.0",
+  "frameworks": {
+    "dora": {
+      "name": "DORA",
+      "fullName": "DevOps Research and Assessment",
+      "version": "2023",
+      "source": "https://dora.dev",
+      "description": "Industry-standard framework for measuring software delivery performance"
+    },
+    "space": {
+      "name": "SPACE",
+      "fullName": "Satisfaction, Performance, Activity, Communication, Efficiency",
+      "version": "2021",
+      "source": "Forsgren et al., Microsoft Research",
+      "description": "Holistic framework for measuring developer productivity"
+    },
+    "ai-dora": {
+      "name": "AI-DORA",
+      "fullName": "AI-Modified DevOps Research and Assessment",
+      "version": "1.0.0",
+      "source": "https://github.com/ProductBuildersHQ/productbuildershq-frameworks",
+      "description": "AI-accelerated DORA metrics with updated baselines"
+    },
+    "ai-space": {
+      "name": "AI-SPACE",
+      "fullName": "AI-Modified Developer Productivity Framework",
+      "version": "1.1.0",
+      "source": "https://github.com/ProductBuildersHQ/productbuildershq-frameworks",
+      "description": "AI-enhanced SPACE framework with 25 metrics across 5 dimensions"
+    }
+  },
+  "slis": {
+    "dora": [
+      {
+        "id": "sli-deployment-frequency",
+        "name": "Deployment Frequency",
+        "description": "How often code is deployed to production",
+        "unit": "deploys/day",
+        "direction": "higher_is_better",
+        "framework": "dora",
+        "reference": "deployment-frequency",
+        "performanceLevels": {
+          "elite": {"operator": "gte", "value": 1, "description": "On-demand, multiple times per day"},
+          "high": {"operator": "gte", "value": 0.14, "description": "Between daily and weekly"},
+          "medium": {"operator": "gte", "value": 0.033, "description": "Between weekly and monthly"},
+          "low": {"operator": "lt", "value": 0.033, "description": "Less than monthly"}
+        },
+        "thresholds": {"M1": 0, "M2": 0.033, "M3": 0.14, "M4": 1, "M5": 10}
+      },
+      {
+        "id": "sli-lead-time",
+        "name": "Lead Time for Changes",
+        "description": "Time from code commit to running in production",
+        "unit": "hours",
+        "direction": "lower_is_better",
+        "framework": "dora",
+        "reference": "lead-time",
+        "performanceLevels": {
+          "elite": {"operator": "lte", "value": 24, "description": "Less than one day"},
+          "high": {"operator": "lte", "value": 168, "description": "Between one day and one week"},
+          "medium": {"operator": "lte", "value": 720, "description": "Between one week and one month"},
+          "low": {"operator": "gt", "value": 720, "description": "More than one month"}
+        },
+        "thresholds": {"M1": 4320, "M2": 720, "M3": 168, "M4": 24, "M5": 1}
+      },
+      {
+        "id": "sli-change-failure-rate",
+        "name": "Change Failure Rate",
+        "description": "Percentage of deployments causing a failure in production",
+        "unit": "%",
+        "direction": "lower_is_better",
+        "framework": "dora",
+        "reference": "change-failure-rate",
+        "performanceLevels": {
+          "elite": {"operator": "lte", "value": 5, "description": "0-5%"},
+          "high": {"operator": "lte", "value": 10, "description": "5-10%"},
+          "medium": {"operator": "lte", "value": 15, "description": "10-15%"},
+          "low": {"operator": "gt", "value": 15, "description": "More than 15%"}
+        },
+        "thresholds": {"M1": 30, "M2": 15, "M3": 10, "M4": 5, "M5": 1}
+      },
+      {
+        "id": "sli-mttr",
+        "name": "Mean Time to Recovery",
+        "description": "Time to restore service after a failure",
+        "unit": "minutes",
+        "direction": "lower_is_better",
+        "framework": "dora",
+        "reference": "time-to-restore",
+        "performanceLevels": {
+          "elite": {"operator": "lte", "value": 60, "description": "Less than one hour"},
+          "high": {"operator": "lte", "value": 1440, "description": "Less than one day"},
+          "medium": {"operator": "lte", "value": 10080, "description": "Between one day and one week"},
+          "low": {"operator": "gt", "value": 10080, "description": "More than one week"}
+        },
+        "thresholds": {"M1": 43200, "M2": 10080, "M3": 1440, "M4": 60, "M5": 15}
+      }
+    ],
+    "space": [
+      {
+        "id": "sli-developer-satisfaction",
+        "name": "Developer Satisfaction",
+        "description": "Overall developer satisfaction with tools, processes, and work environment",
+        "unit": "1-5",
+        "direction": "higher_is_better",
+        "framework": "space",
+        "reference": "satisfaction",
+        "dimension": "S",
+        "thresholds": {"M1": 1, "M2": 2.5, "M3": 3.5, "M4": 4, "M5": 4.5}
+      },
+      {
+        "id": "sli-code-review-quality",
+        "name": "Code Review Quality",
+        "description": "Quality rating of code reviews",
+        "unit": "1-5",
+        "direction": "higher_is_better",
+        "framework": "space",
+        "reference": "performance",
+        "dimension": "P",
+        "thresholds": {"M1": 1, "M2": 2.5, "M3": 3.5, "M4": 4, "M5": 4.5}
+      },
+      {
+        "id": "sli-pr-throughput",
+        "name": "PR Throughput",
+        "description": "Pull requests merged per developer per week",
+        "unit": "prs/dev/week",
+        "direction": "higher_is_better",
+        "framework": "space",
+        "reference": "activity",
+        "dimension": "A",
+        "thresholds": {"M1": 0, "M2": 2, "M3": 4, "M4": 6, "M5": 10}
+      },
+      {
+        "id": "sli-documentation-quality",
+        "name": "Documentation Quality",
+        "description": "Quality and completeness of documentation",
+        "unit": "%",
+        "direction": "higher_is_better",
+        "framework": "space",
+        "reference": "communication",
+        "dimension": "C",
+        "thresholds": {"M1": 0, "M2": 40, "M3": 60, "M4": 80, "M5": 95}
+      },
+      {
+        "id": "sli-code-review-time",
+        "name": "Code Review Time",
+        "description": "Average time for code reviews to complete",
+        "unit": "hours",
+        "direction": "lower_is_better",
+        "framework": "space",
+        "reference": "efficiency",
+        "dimension": "E",
+        "thresholds": {"M1": 72, "M2": 48, "M3": 24, "M4": 8, "M5": 4}
+      },
+      {
+        "id": "sli-flow-hours",
+        "name": "Flow State Hours",
+        "description": "Hours per day in uninterrupted focused work",
+        "unit": "hours/day",
+        "direction": "higher_is_better",
+        "framework": "space",
+        "reference": "efficiency",
+        "dimension": "E",
+        "thresholds": {"M1": 0, "M2": 2, "M3": 3, "M4": 5, "M5": 6}
+      }
+    ],
+    "ai-dora": [
+      {
+        "id": "sli-ai-deployment-frequency",
+        "name": "AI-Assisted Deployment Frequency",
+        "description": "How often code is deployed to production with AI assistance",
+        "unit": "deploys/day",
+        "direction": "higher_is_better",
+        "framework": "ai-dora",
+        "reference": "deployment-frequency",
+        "aiEnablers": ["AI code generation", "automated test generation", "intelligent CI/CD pipelines"],
+        "performanceLevels": {
+          "elite": {"operator": "gte", "value": 10, "description": "10+ per day (3-5x standard elite)"},
+          "high": {"operator": "gte", "value": 3, "description": "3+ per day (5-10x standard)"},
+          "medium": {"operator": "gte", "value": 1, "description": "Daily (7x standard)"},
+          "low": {"operator": "gte", "value": 0.2, "description": "Weekly+ (4x standard)"}
+        },
+        "thresholds": {"M1": 0.2, "M2": 1, "M3": 3, "M4": 10, "M5": 25}
+      },
+      {
+        "id": "sli-ai-lead-time",
+        "name": "AI-Assisted Lead Time",
+        "description": "Time from code commit to production with AI assistance",
+        "unit": "hours",
+        "direction": "lower_is_better",
+        "framework": "ai-dora",
+        "reference": "lead-time",
+        "aiEnablers": ["AI pair programming", "AI-assisted code review", "AI test generation"],
+        "performanceLevels": {
+          "elite": {"operator": "lte", "value": 2, "description": "Under 2 hours (12x standard elite)"},
+          "high": {"operator": "lte", "value": 24, "description": "Under 1 day (7x standard)"},
+          "medium": {"operator": "lte", "value": 72, "description": "Under 3 days (10x standard)"},
+          "low": {"operator": "lte", "value": 168, "description": "Under 1 week (4x standard)"}
+        },
+        "thresholds": {"M1": 168, "M2": 72, "M3": 24, "M4": 2, "M5": 0.5}
+      },
+      {
+        "id": "sli-ai-change-failure-rate",
+        "name": "AI-Assisted Change Failure Rate",
+        "description": "Percentage of AI-assisted deployments causing failures",
+        "unit": "%",
+        "direction": "lower_is_better",
+        "framework": "ai-dora",
+        "reference": "change-failure-rate",
+        "aiEnablers": ["AI static analysis", "AI-generated test coverage", "AI security scanning"],
+        "performanceLevels": {
+          "elite": {"operator": "lte", "value": 2, "description": "0-2% (2.5x better than standard)"},
+          "high": {"operator": "lte", "value": 5, "description": "2-5% (2x better)"},
+          "medium": {"operator": "lte", "value": 8, "description": "5-8% (1.8x better)"},
+          "low": {"operator": "lte", "value": 12, "description": "8-12% (1.5x better)"}
+        },
+        "thresholds": {"M1": 12, "M2": 8, "M3": 5, "M4": 2, "M5": 0.5}
+      },
+      {
+        "id": "sli-ai-mttr",
+        "name": "AI-Assisted Mean Time to Recovery",
+        "description": "Time to restore service with AI assistance",
+        "unit": "minutes",
+        "direction": "lower_is_better",
+        "framework": "ai-dora",
+        "reference": "time-to-restore",
+        "aiEnablers": ["AI debugging assistants", "AI root cause analysis", "AI-powered runbooks"],
+        "performanceLevels": {
+          "elite": {"operator": "lte", "value": 15, "description": "Under 15 minutes (4x standard elite)"},
+          "high": {"operator": "lte", "value": 120, "description": "Under 2 hours (12x standard)"},
+          "medium": {"operator": "lte", "value": 1440, "description": "Under 1 day (7x standard)"},
+          "low": {"operator": "lte", "value": 4320, "description": "Under 3 days (3x standard)"}
+        },
+        "thresholds": {"M1": 4320, "M2": 1440, "M3": 120, "M4": 15, "M5": 5}
+      }
+    ],
+    "ai-space": {
+      "satisfaction": [
+        {
+          "id": "sli-ai-tool-satisfaction",
+          "name": "AI Tool Satisfaction",
+          "description": "Developer satisfaction with AI assistants (Copilot, Claude, etc.)",
+          "unit": "1-5",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "ai-satisfaction",
+          "dimension": "S",
+          "thresholds": {"M1": 1, "M2": 3, "M3": 3.5, "M4": 4, "M5": 4.5}
+        },
+        {
+          "id": "sli-toil-reduction",
+          "name": "Toil Reduction",
+          "description": "Percentage reduction in repetitive, automatable work",
+          "unit": "%",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "toil-reduction",
+          "dimension": "S",
+          "thresholds": {"M1": 0, "M2": 20, "M3": 40, "M4": 60, "M5": 80}
+        },
+        {
+          "id": "sli-creative-ratio",
+          "name": "Creative Work Ratio",
+          "description": "Percentage of time on creative vs routine tasks",
+          "unit": "%",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "creative-ratio",
+          "dimension": "S",
+          "thresholds": {"M1": 20, "M2": 40, "M3": 60, "M4": 70, "M5": 85}
+        }
+      ],
+      "performance": [
+        {
+          "id": "sli-ai-code-acceptance",
+          "name": "AI Code Acceptance Rate",
+          "description": "Percentage of AI suggestions accepted after review",
+          "unit": "%",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "ai-acceptance",
+          "dimension": "P",
+          "thresholds": {"M1": 0, "M2": 30, "M3": 50, "M4": 70, "M5": 85}
+        },
+        {
+          "id": "sli-ai-code-quality",
+          "name": "AI Code Quality Score",
+          "description": "Quality rating of AI-generated code",
+          "unit": "1-5",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "ai-quality",
+          "dimension": "P",
+          "thresholds": {"M1": 1, "M2": 3, "M3": 3.5, "M4": 4, "M5": 4.5}
+        },
+        {
+          "id": "sli-human-catch-rate",
+          "name": "Human Review Catch Rate",
+          "description": "Issues caught by human review of AI code (optimal: 5-15%)",
+          "unit": "%",
+          "direction": "optimal",
+          "optimalRange": {"min": 5, "max": 15},
+          "framework": "ai-space",
+          "reference": "human-catch-rate",
+          "dimension": "P"
+        },
+        {
+          "id": "sli-ai-defect-density",
+          "name": "AI Code Defect Density",
+          "description": "Defects per KLOC in AI-generated code",
+          "unit": "defects/KLOC",
+          "direction": "lower_is_better",
+          "framework": "ai-space",
+          "reference": "ai-defect-density",
+          "dimension": "P",
+          "thresholds": {"M1": 10, "M2": 5, "M3": 3, "M4": 1.5, "M5": 0.5}
+        }
+      ],
+      "activity": [
+        {
+          "id": "sli-ai-leverage",
+          "name": "AI Leverage",
+          "description": "Percentage of development work performed with AI assistance",
+          "unit": "%",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "ai-leverage",
+          "dimension": "A",
+          "thresholds": {"M1": 0, "M2": 20, "M3": 40, "M4": 60, "M5": 85}
+        },
+        {
+          "id": "sli-prompt-reuse",
+          "name": "Prompt Reuse Rate",
+          "description": "Percentage of prompts templated for reuse",
+          "unit": "%",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "prompt-reuse",
+          "dimension": "A",
+          "thresholds": {"M1": 0, "M2": 20, "M3": 35, "M4": 50, "M5": 70}
+        },
+        {
+          "id": "sli-session-efficiency",
+          "name": "AI Session Efficiency",
+          "description": "Meaningful outcomes per AI session hour",
+          "unit": "outcomes/hr",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "session-efficiency",
+          "dimension": "A",
+          "thresholds": {"M1": 0, "M2": 1, "M3": 3, "M4": 5, "M5": 8}
+        },
+        {
+          "id": "sli-ai-feature-delivery",
+          "name": "AI-Assisted Feature Delivery Rate",
+          "description": "Features delivered per sprint with AI assistance",
+          "unit": "features/sprint",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "feature-delivery",
+          "dimension": "A",
+          "thresholds": {"M1": 0, "M2": 3, "M3": 5, "M4": 8, "M5": 12}
+        }
+      ],
+      "communication": [
+        {
+          "id": "sli-workflow-sharing",
+          "name": "AI Workflow Sharing Rate",
+          "description": "Percentage of AI workflows shared with team",
+          "unit": "%",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "workflow-sharing",
+          "dimension": "C",
+          "thresholds": {"M1": 0, "M2": 20, "M3": 40, "M4": 60, "M5": 80}
+        },
+        {
+          "id": "sli-prompt-contributions",
+          "name": "Prompt Library Contributions",
+          "description": "Contributions to shared prompt libraries per month",
+          "unit": "count/month",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "prompt-contributions",
+          "dimension": "C",
+          "thresholds": {"M1": 0, "M2": 2, "M3": 5, "M4": 10, "M5": 20}
+        },
+        {
+          "id": "sli-ai-feedback-loop",
+          "name": "AI-Enabled Feedback Loop Speed",
+          "description": "Time from code change to actionable feedback",
+          "unit": "minutes",
+          "direction": "lower_is_better",
+          "framework": "ai-space",
+          "reference": "feedback-loop-speed",
+          "dimension": "C",
+          "thresholds": {"M1": 120, "M2": 60, "M3": 30, "M4": 15, "M5": 5}
+        }
+      ],
+      "efficiency": [
+        {
+          "id": "sli-ai-acceleration",
+          "name": "AI Acceleration Factor",
+          "description": "Task completion speed with AI vs without",
+          "unit": "x",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "acceleration-factor",
+          "dimension": "E",
+          "thresholds": {"M1": 1, "M2": 1.5, "M3": 2.5, "M4": 4, "M5": 6}
+        },
+        {
+          "id": "sli-context-switches",
+          "name": "Context Switch Frequency",
+          "description": "Disruptive switches between human and AI work per day",
+          "unit": "/day",
+          "direction": "lower_is_better",
+          "framework": "ai-space",
+          "reference": "context-switches",
+          "dimension": "E",
+          "thresholds": {"M1": 20, "M2": 12, "M3": 8, "M4": 5, "M5": 2}
+        },
+        {
+          "id": "sli-ai-flow-hours",
+          "name": "AI-Augmented Flow Hours",
+          "description": "Hours per day in AI-augmented flow state",
+          "unit": "hours/day",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "augmented-flow",
+          "dimension": "E",
+          "thresholds": {"M1": 0, "M2": 2, "M3": 4, "M4": 5, "M5": 7}
+        },
+        {
+          "id": "sli-ai-cycle-time",
+          "name": "AI-Assisted Cycle Time",
+          "description": "Time from work start to production deployment with AI",
+          "unit": "hours",
+          "direction": "lower_is_better",
+          "framework": "ai-space",
+          "reference": "cycle-time",
+          "dimension": "E",
+          "thresholds": {"M1": 168, "M2": 72, "M3": 24, "M4": 8, "M5": 2}
+        },
+        {
+          "id": "sli-ai-time-savings",
+          "name": "Weekly AI Time Savings",
+          "description": "Hours saved per week due to AI assistance",
+          "unit": "hours/week",
+          "direction": "higher_is_better",
+          "framework": "ai-space",
+          "reference": "time-savings",
+          "dimension": "E",
+          "thresholds": {"M1": 0, "M2": 4, "M3": 8, "M4": 12, "M5": 20}
+        }
+      ]
+    }
+  },
+  "antiPatterns": {
+    "ai-space": [
+      {"id": "lines-of-code", "name": "Lines of Code", "reason": "AI can generate infinite LOC; meaningless metric"},
+      {"id": "number-of-prompts", "name": "Number of Prompts", "reason": "Easily gamed; more prompts does not equal better outcomes"},
+      {"id": "ai-tool-usage-time", "name": "AI Tool Usage Time", "reason": "More time does not equal better; efficiency matters"},
+      {"id": "raw-commit-frequency", "name": "Raw Commit Frequency", "reason": "AI can generate infinite commits"},
+      {"id": "code-churn", "name": "Code Churn", "reason": "AI refactoring inflates churn without value correlation"}
+    ]
+  },
+  "maturityLevels": {
+    "dora": [
+      {"level": 1, "name": "Low", "performanceLevel": "low"},
+      {"level": 2, "name": "Medium", "performanceLevel": "medium"},
+      {"level": 3, "name": "High", "performanceLevel": "high"},
+      {"level": 4, "name": "Elite", "performanceLevel": "elite"}
+    ],
+    "ai-space": [
+      {"level": 0, "name": "No AI Usage", "code": "L0", "description": "No AI tools adopted"},
+      {"level": 1, "name": "Ad-hoc AI Usage", "code": "L1", "description": "Individual experimentation"},
+      {"level": 2, "name": "Structured AI Usage", "code": "L2", "description": "Prompt reuse > 30%"},
+      {"level": 3, "name": "Optimized AI Usage", "code": "L3", "description": "Acceleration factor > 3x"},
+      {"level": 4, "name": "AI-Native", "code": "L4", "description": "AI leverage > 80%"}
+    ]
+  }
+}
