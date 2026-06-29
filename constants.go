@@ -200,6 +200,15 @@ const (
 	FrameworkOWASP       = "owasp"
 	FrameworkSLSA        = "slsa"
 	FrameworkSSDF        = "ssdf"
+
+	// Operations and DevOps Frameworks
+	FrameworkDORA = "dora" // DevOps Research and Assessment
+	FrameworkSRE  = "sre"  // Site Reliability Engineering
+
+	// Developer Productivity Frameworks
+	FrameworkSPACE   = "space"    // Satisfaction, Performance, Activity, Communication, Efficiency
+	FrameworkAIDORA  = "ai-dora"  // AI-Modified DevOps Research and Assessment
+	FrameworkAISPACE = "ai-space" // AI-Modified Developer Productivity Framework
 )
 
 // AllFrameworks returns all valid framework values.
@@ -215,5 +224,35 @@ func AllFrameworks() []string {
 		FrameworkOWASP,
 		FrameworkSLSA,
 		FrameworkSSDF,
+		FrameworkDORA,
+		FrameworkSRE,
+		FrameworkSPACE,
+		FrameworkAIDORA,
+		FrameworkAISPACE,
+	}
+}
+
+// OperationsFrameworks returns operations-focused frameworks.
+func OperationsFrameworks() []string {
+	return []string{
+		FrameworkDORA,
+		FrameworkSRE,
+		FrameworkAIDORA,
+	}
+}
+
+// DeveloperProductivityFrameworks returns developer productivity frameworks.
+func DeveloperProductivityFrameworks() []string {
+	return []string{
+		FrameworkSPACE,
+		FrameworkAISPACE,
+	}
+}
+
+// AIFrameworks returns AI-enhanced frameworks.
+func AIFrameworks() []string {
+	return []string{
+		FrameworkAIDORA,
+		FrameworkAISPACE,
 	}
 }

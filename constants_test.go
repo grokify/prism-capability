@@ -89,8 +89,8 @@ func TestAllToolStatuses(t *testing.T) {
 
 func TestAllFrameworks(t *testing.T) {
 	frameworks := AllFrameworks()
-	if len(frameworks) != 10 {
-		t.Errorf("Expected 10 frameworks, got %d", len(frameworks))
+	if len(frameworks) != 15 {
+		t.Errorf("Expected 15 frameworks, got %d", len(frameworks))
 	}
 
 	// Verify key frameworks exist
@@ -99,7 +99,7 @@ func TestAllFrameworks(t *testing.T) {
 		found[f] = true
 	}
 
-	required := []string{"nist-csf-2.0", "iso-27001", "soc2", "slsa"}
+	required := []string{"nist-csf-2.0", "iso-27001", "soc2", "slsa", "dora", "space"}
 	for _, r := range required {
 		if !found[r] {
 			t.Errorf("Missing required framework: %s", r)
