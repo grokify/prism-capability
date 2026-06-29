@@ -7,6 +7,29 @@
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
     {
+      "version": "v0.6.0",
+      "date": "2026-06-28",
+      "highlights": [
+        { "description": "Add operations and developer productivity framework constants (DORA, SRE, SPACE, AI-DORA, AI-SPACE)" },
+        { "description": "Add developer experience metrics with canonical SLI definitions" }
+      ],
+      "added": [
+        { "description": "Add `FrameworkDORA` and `FrameworkSRE` constants for operations frameworks", "commit": "c3f6202" },
+        { "description": "Add `FrameworkSPACE`, `FrameworkAIDORA`, `FrameworkAISPACE` constants for developer productivity", "commit": "c3f6202" },
+        { "description": "Add `OperationsFrameworks()` function returning DORA, SRE, AI-DORA", "commit": "c3f6202" },
+        { "description": "Add `DeveloperProductivityFrameworks()` function returning SPACE, AI-SPACE", "commit": "c3f6202" },
+        { "description": "Add `AIFrameworks()` function returning AI-enhanced frameworks", "commit": "c3f6202" },
+        { "description": "Add `metrics/devex.json` with canonical SLI definitions for DORA, SPACE, AI-DORA, AI-SPACE", "commit": "56f9a52" }
+      ],
+      "documentation": [
+        { "description": "Update README with framework categories (Compliance & Security, Operations & DevOps, Developer Productivity)", "commit": "f0b035d" }
+      ],
+      "chore": [
+        { "description": "Update dependencies", "commit": "f687a08" },
+        { "description": "Add MkDocs build output to gitignore", "commit": "e991f1b" }
+      ]
+    },
+    {
       "version": "v0.5.0",
       "date": "2026-06-06",
       "highlights": [
