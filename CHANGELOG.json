@@ -7,6 +7,32 @@
   "maintainers": ["grokify", "johncwang@gmail.com"],
   "releases": [
     {
+      "version": "v0.7.0",
+      "date": "2026-07-19",
+      "highlights": [
+        { "description": "Native SVG renderer for capability stacks with stack and hub-and-spoke layouts" },
+        { "description": "Direct SVG output from capstack CLI eliminates D2 dependency for portable diagrams" }
+      ],
+      "added": [
+        { "description": "Native SVG renderer (`render.RenderSVG`, `render.RenderSVGString`) with two layout modes: stack (layered) and hub (hexagonal)", "commit": "cbc54d3" },
+        { "description": "SVG theming with customizable colors, accents, and typography via `SVGTheme`", "commit": "cbc54d3" },
+        { "description": "Stack layout: layered marketecture with capability cells, applications band, and substrate band", "commit": "cbc54d3" },
+        { "description": "Hub layout: hexagonal hub-and-spoke with per-layer nodes on a ring and central hub", "commit": "cbc54d3" },
+        { "description": "Smart cell wrapping and per-layer accent color cycling", "commit": "cbc54d3" },
+        { "description": "CLI support for SVG rendering: `capstack render -f svg --layout [stack|hub]`", "commit": "5ca5cfc" },
+        { "description": "`--layout` and `--substrate` flags for SVG rendering options", "commit": "5ca5cfc" },
+        { "description": "SVG output file auto-detection (`.svg` extension)", "commit": "5ca5cfc" }
+      ],
+      "tested": [
+        { "description": "Both stack and hub layouts render correctly and validate with proper SVG structure", "commit": "010b027" },
+        { "description": "Tooling aggregation on hub nodes with fallback to capability count", "commit": "010b027" },
+        { "description": "Error handling for unknown layout values", "commit": "010b027" }
+      ],
+      "documentation": [
+        { "description": "Update README.md with SVG rendering examples and layout documentation", "commit": "cbc54d3" }
+      ]
+    },
+    {
       "version": "v0.6.0",
       "date": "2026-06-28",
       "highlights": [

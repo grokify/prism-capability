@@ -155,9 +155,18 @@ capstack init -n platform-capabilities -d platform -o platform.json
 
 ### Render to diagram
 
-Generate D2 diagrams or HTML from capability stacks:
+Generate SVG, D2 diagrams, or HTML from capability stacks:
 
 ```bash
+# Generate native SVG (stack layout: layered marketecture)
+capstack render stack.json -f svg -o stack.svg
+
+# Generate SVG with hub layout (hexagonal hub-and-spoke for small stacks)
+capstack render stack.json -f svg --layout=hub -o stack-hub.svg
+
+# Customize SVG substrate text
+capstack render stack.json -f svg --substrate "Go · Kubernetes · 15+ providers" -o stack.svg
+
 # Generate D2 file
 capstack render stack.json -o stack.d2
 
@@ -191,10 +200,18 @@ capstack render stack.json -f json -o stack-data.json
 
 | Format | Description |
 |--------|-------------|
+| `svg` | Native SVG marketecture diagram (new in v0.7.0) |
 | `d2` | D2 diagram language (default) |
 | `html` | Static HTML - embeddable fragment or standalone document |
 | `lit` | Interactive HTML with Lit web component |
 | `json` | JSON data for custom Lit component integration |
+
+**SVG Layout Options:**
+
+| Layout | Description |
+|--------|-------------|
+| `stack` (default) | Layered marketecture with capability cells, applications band, and substrate band |
+| `hub` | Hexagonal hub-and-spoke architecture, best for 4-8 layer stacks |
 
 **Render Styles (D2 only):**
 
