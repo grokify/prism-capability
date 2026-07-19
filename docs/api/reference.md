@@ -101,6 +101,70 @@ opts.Overlays = overlays // optional
 d2, err := render.RenderD2String(cs, opts)
 ```
 
+### SVG (Native)
+
+Generate portable, themeable SVG diagrams with two layout modes:
+
+**Stack Layout** (layered marketecture):
+
+```go
+opts := render.DefaultSVGOptions()
+opts.Layout = render.SVGLayoutStack
+opts.Title = "Platform Capability Stack"
+opts.TopBandLabel = "Your Applications"
+opts.Substrate = "Go · Kubernetes · 15+ providers"
+
+svg, err := render.RenderSVGString(cs, opts)
+// Write svg to file or embed in HTML
+```
+
+**Hub Layout** (hexagonal hub-and-spoke):
+
+```go
+opts := render.DefaultSVGOptions()
+opts.Layout = render.SVGLayoutHub
+opts.CenterLabel = "Platform Core"
+opts.CenterSubLabel = "Runtime"
+opts.Substrate = "Cloud-Native Infrastructure"
+
+svg, err := render.RenderSVGString(cs, opts)
+```
+
+**Custom Theme**:
+
+```go
+opts := render.DefaultSVGOptions()
+opts.Theme = render.SVGTheme{
+    Background:  "#0a0e1a",
+    Surface:     "#1e293b",
+    Text:        "#f1f5f9",
+    TextMuted:   "#94a3b8",
+    CellText:    "#cbd5e1",
+    Accents:     []string{"#06b6d4", "#8b5cf6", "#ec4899"},
+    HubGradient: []string{"#06b6d4", "#8b5cf6", "#ec4899"},
+}
+opts.Layout = render.SVGLayoutStack
+
+svg, err := render.RenderSVGString(cs, opts)
+```
+
+**Rendering to File**:
+
+```go
+import (
+    "os"
+    "github.com/grokify/prism-capability/render"
+)
+
+opts := render.DefaultSVGOptions()
+opts.Layout = render.SVGLayoutStack
+
+f, err := os.Create("stack.svg")
+defer f.Close()
+
+err = render.RenderSVG(f, cs, opts)
+```
+
 ### Overlays
 
 ```go
