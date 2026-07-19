@@ -33,6 +33,11 @@ var (
 	renderComponentPath string
 )
 
+var (
+	renderLayout    string
+	renderSubstrate string
+)
+
 var renderCmd = &cobra.Command{
 	Use:   "render <file>",
 	Short: "Render capability stack to a diagram",
@@ -68,7 +73,9 @@ Examples:
 
 func init() {
 	renderCmd.Flags().StringVarP(&renderOutput, "output", "o", "", "Output file (default: stdout)")
-	renderCmd.Flags().StringVarP(&renderFormat, "format", "f", "d2", "Output format (d2, html, lit, json)")
+	renderCmd.Flags().StringVarP(&renderFormat, "format", "f", "d2", "Output format (d2, svg, html, lit, json)")
+	renderCmd.Flags().StringVar(&renderLayout, "layout", "stack", "SVG layout: stack or hub (svg only)")
+	renderCmd.Flags().StringVar(&renderSubstrate, "substrate", "", "Substrate band text (svg only)")
 	renderCmd.Flags().StringVarP(&renderTitle, "title", "t", "", "Diagram title (default: from metadata)")
 	renderCmd.Flags().StringVarP(&renderStyle, "style", "s", "default", "Render style: default or grid (D2 only)")
 	renderCmd.Flags().BoolVar(&renderNoDeps, "no-deps", false, "Hide dependency arrows (D2 only)")
@@ -122,6 +129,8 @@ func runRender(cmd *cobra.Command, args []string) error {
 			switch ext {
 			case ".d2":
 				renderFormat = "d2"
+			case ".svg":
+				renderFormat = "svg"
 			case ".html", ".htm":
 				renderFormat = "html"
 			case ".json":
@@ -141,6 +150,14 @@ func runRender(cmd *cobra.Command, args []string) error {
 	switch strings.ToLower(renderFormat) {
 	case "d2":
 		if err := render.RenderD2(out, doc, opts); err != nil {
+			return fmt.Errorf("render failed: %w", err)
+		}
+	case "svg":
+		svgOpts := render.DefaultSVGOptions()
+		svgOpts.Layout = render.SVGLayout(strings.ToLower(renderLayout))
+		svgOpts.Title = renderTitle
+		svgOpts.Substrate = renderSubstrate
+		if err := render.RenderSVG(out, doc, svgOpts); err != nil {
 			return fmt.Errorf("render failed: %w", err)
 		}
 	case "html", "htm":
@@ -179,7 +196,7 @@ func runRender(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("render failed: %w", err)
 		}
 	default:
-		return fmt.Errorf("unsupported format: %s (supported: d2, html, lit, json)", renderFormat)
+		return fmt.Errorf("unsupported format: %s (supported: d2, svg, html, lit, json)", renderFormat)
 	}
 
 	if renderOutput != "" {
