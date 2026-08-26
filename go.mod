@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/grokify/priority-frameworks v0.2.0
-	github.com/grokify/prism-core v0.4.0
+	github.com/grokify/prism-core v0.5.0
 	github.com/spf13/cobra v1.10.2
 )
 
